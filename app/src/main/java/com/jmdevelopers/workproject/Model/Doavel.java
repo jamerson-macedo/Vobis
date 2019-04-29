@@ -6,6 +6,8 @@ import com.jmdevelopers.workproject.Config.ConfiguracaoFirebase;
 public class Doavel {
     private String nome;
     private String foto;
+    private String foto2;
+
     private String descricao;
     private String validade;
     private String telefone;
@@ -19,6 +21,13 @@ public class Doavel {
                 .push()
                 .setValue(this);
 
+    }
+    public String getFoto2() {
+        return foto2;
+    }
+
+    public void setFoto2(String foto2) {
+        this.foto2 = foto2;
     }
 
     public String getNome() {
