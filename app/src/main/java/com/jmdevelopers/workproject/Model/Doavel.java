@@ -1,5 +1,8 @@
 package com.jmdevelopers.workproject.Model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.jmdevelopers.workproject.Config.ConfiguracaoFirebase;
+
 public class Doavel {
     private String nome;
     private String foto;
@@ -9,6 +12,14 @@ public class Doavel {
     private String tipo;
     private String dataPublicada;
     private String Localizacao;
+    public void salvar(){
+
+        DatabaseReference firebase = ConfiguracaoFirebase.getFirebaseDatabase();
+        firebase.child("doacao")
+                .push()
+                .setValue(this);
+
+    }
 
     public String getNome() {
         return nome;
