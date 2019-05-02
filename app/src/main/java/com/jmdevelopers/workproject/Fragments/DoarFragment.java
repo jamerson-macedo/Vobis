@@ -3,6 +3,7 @@ package com.jmdevelopers.workproject.Fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +19,7 @@ import com.jmdevelopers.workproject.R;
 
 
 public class DoarFragment extends Fragment {
-    private EditText nome, telefone, localizacao, tipo, validade, descricao;
+    private TextInputLayout nome, telefone, localizacao, tipo, validade, descricao;
     private ImageView foto1, foto2;
     Doavel doavel;
 
@@ -47,16 +48,17 @@ public class DoarFragment extends Fragment {
             public void onClick(View v) {
 
 
-                String textoNome = nome.getText().toString();
-                String textotelefone = telefone.getText().toString();
-                String textolocalizacao = localizacao.getText().toString();
-                String textotipo = tipo.getText().toString();
-                String textovalidade = validade.getText().toString();
-                String textodescricao = descricao.getText().toString();
+                String textoNome = nome.getEditText().getText().toString();
+                String textotelefone = telefone.getEditText().getText().toString();
+                String textolocalizacao = localizacao.getEditText().getText().toString();
+                String textotipo = tipo.getEditText().getText().toString();
+                String textovalidade = validade.getEditText().getText().toString();
+                String textodescricao = descricao.getEditText().getText().toString();
 
                 if (textoNome.isEmpty() || textotelefone.isEmpty() || textolocalizacao.isEmpty() || textotipo.isEmpty() || textovalidade.isEmpty() || textodescricao.isEmpty()) {
                     mensagemdeErro("preencha os camopos");
                 } else {
+                    doavel=new Doavel();
                     doavel.setDataPublicada(DataCustom.dataAtual());
                     doavel.setDescricao(textodescricao);
                     doavel.setLocalizacao(textolocalizacao);
