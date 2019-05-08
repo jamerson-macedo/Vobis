@@ -1,7 +1,5 @@
 package com.jmdevelopers.workproject.Fragments;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -9,13 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.jmdevelopers.workproject.Helper.DataCustom;
-import com.jmdevelopers.workproject.Model.Doavel;
 import com.jmdevelopers.workproject.R;
+import com.jmdevelopers.workproject.model.Doavel;
 
 
 public class DoarFragment extends Fragment {
@@ -40,32 +36,22 @@ public class DoarFragment extends Fragment {
         tipo = view.findViewById(R.id.doartipo);
         validade = view.findViewById(R.id.doarvalidade);
         descricao = view.findViewById(R.id.doardescricao);
-        foto1 = view.findViewById(R.id.doarfoto1);
-        foto2 = view.findViewById(R.id.doarfoto2);
         cadastrar = view.findViewById(R.id.doarcadastrar);
+
         cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String nome = DoarFragment.this.nome.getEditText().getText().toString();
+                String telefone = DoarFragment.this.telefone.getEditText().getText().toString();
+                String localizacao = DoarFragment.this.localizacao.getEditText().getText().toString();
+                String tipo = DoarFragment.this.tipo.getEditText().getText().toString();
+                String validade = DoarFragment.this.validade.getEditText().getText().toString();
+                String descricao = DoarFragment.this.descricao.getEditText().getText().toString();
 
-
-                String textoNome = nome.getEditText().getText().toString();
-                String textotelefone = telefone.getEditText().getText().toString();
-                String textolocalizacao = localizacao.getEditText().getText().toString();
-                String textotipo = tipo.getEditText().getText().toString();
-                String textovalidade = validade.getEditText().getText().toString();
-                String textodescricao = descricao.getEditText().getText().toString();
-
-                if (textoNome.isEmpty() || textotelefone.isEmpty() || textolocalizacao.isEmpty() || textotipo.isEmpty() || textovalidade.isEmpty() || textodescricao.isEmpty()) {
+                if (nome.isEmpty() || telefone.isEmpty() || localizacao.isEmpty() || tipo.isEmpty() || validade.isEmpty() || descricao.isEmpty()) {
                     mensagemdeErro("preencha os camopos");
                 } else {
-                    doavel=new Doavel();
-                    doavel.setDataPublicada(DataCustom.dataAtual());
-                    doavel.setDescricao(textodescricao);
-                    doavel.setLocalizacao(textolocalizacao);
-                    doavel.setTelefone(textotelefone);
-                    doavel.setNome(textoNome);
-                    doavel.setTipo(textotipo);
-                    doavel.setValidade(textovalidade);
+                    doavel = new Doavel(nome, descricao, validade, telefone, tipo, localizacao);
                     doavel.salvar();
 
                 }
