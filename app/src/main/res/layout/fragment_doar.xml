@@ -17,11 +17,11 @@
             android:id="@+id/doarnome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="48dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -29,7 +29,6 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_person_black_24dp"
                 android:drawableRight="@drawable/ic_person_black_24dp"
                 android:hint="Nome" />
 
@@ -39,11 +38,11 @@
             android:id="@+id/doarloc"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/doarnome">
@@ -51,7 +50,6 @@
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableEnd="@drawable/ic_location_on_black_24dp"
                 android:drawableRight="@drawable/ic_location_on_black_24dp"
                 android:hint="Localização" />
 
@@ -61,11 +59,11 @@
             android:id="@+id/doartipo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/doarloc">
@@ -77,120 +75,130 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
             android:id="@+id/doartelefone"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
 
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/doartipo">
 
             <com.github.pinball83.maskededittext.MaskedEditText
                 android:layout_width="match_parent"
-                app:mask="(**)*****-****"
-                app:notMaskedSymbol="*"
-                android:drawableEnd="@drawable/ic_local_phone_black_24dp"
-                android:drawableRight="@drawable/ic_local_phone_black_24dp"
-                android:inputType="number"
-
                 android:layout_height="wrap_content"
-                android:hint="Telefone" />
+                android:drawableRight="@drawable/ic_local_phone_black_24dp"
+                android:hint="Telefone"
+                android:inputType="number"
+                app:mask="(**)*****-****"
+                app:notMaskedSymbol="*" />
         </android.support.design.widget.TextInputLayout>
 
 
-        <com.github.pinball83.maskededittext.MaskedEditText
-            android:id="@+id/doarvalidade"
-            android:layout_width="wrap_content"
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/validadeLayoutInput"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="12dp"
-            android:digits="1000"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
 
-            android:gravity="center"
-            android:hint="Validade"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doartelefone"
-            app:mask="**/**/****"
-            app:notMaskedSymbol="*" />
-
-
-        <ImageView
-            android:id="@+id/doarfoto1"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/doarfoto2"
-            app:layout_constraintTop_toBottomOf="@+id/doartelefone"
-            app:srcCompat="@mipmap/ic_launcher" />
-
-        <ImageView
-            android:id="@+id/doarfoto2"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doartelefone"
-            app:srcCompat="@mipmap/ic_launcher" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doartelefone">
+
+            <com.github.pinball83.maskededittext.MaskedEditText
+                android:id="@+id/doarvalidade"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/ic_today_black_24dp"
+                android:hint="Validade"
+                android:inputType="number"
+                app:layout_constraintStart_toStartOf="parent"
+                app:mask="**/**/****"
+                app:notMaskedSymbol="*" />
+
+        </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="0dp"
             android:id="@+id/doardescricao"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doarvalidade">
+            app:layout_constraintTop_toBottomOf="@+id/validadeLayoutInput">
 
             <android.support.design.widget.TextInputEditText
                 android:layout_width="match_parent"
-                android:drawableEnd="@drawable/ic_message_black_24dp"
                 android:layout_height="wrap_content"
+                android:drawableEnd="@drawable/ic_message_black_24dp"
                 android:drawableRight="@drawable/ic_message_black_24dp"
                 android:hint="Descrição" />
         </android.support.design.widget.TextInputLayout>
+
+        <HorizontalScrollView
+            android:id="@+id/horizontalScrollView"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/doardescricao">
+
+            <LinearLayout
+                android:id="@+id/containerPhotos"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="100">
+
+                <ImageView
+                    android:id="@+id/btnAddPhoto"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
+
+                <View
+                    android:id="@+id/divider"
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_weight="2"
+                    android:background="?android:attr/listDivider" />
+            </LinearLayout>
+        </HorizontalScrollView>
+
         <Button
             android:id="@+id/doarcadastrar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             android:text="Doar"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doardescricao" />
-
-        <ImageView
-            android:id="@+id/doardata"
-            android:layout_width="35dp"
-            android:layout_height="34dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/doarfoto1"
-            app:layout_constraintStart_toEndOf="@+id/doarvalidade"
-            app:layout_constraintTop_toBottomOf="@+id/doartelefone"
-            app:srcCompat="@drawable/ic_today_black_24dp" />
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
     </android.support.constraint.ConstraintLayout>
 

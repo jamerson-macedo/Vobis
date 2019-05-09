@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.jmdevelopers.workproject.Helper.DatePickerFragment;
@@ -25,7 +24,6 @@ import java.util.Calendar;
 
 public class DoarFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
     private TextInputLayout nome, telefone, localizacao, tipo, descricao;
-    private ImageView validadefoto;
     private EditText validade;
     Doavel doavel;
 
@@ -47,7 +45,6 @@ public class DoarFragment extends Fragment implements DatePickerDialog.OnDateSet
         validade = view.findViewById(R.id.doarvalidade);
         descricao = view.findViewById(R.id.doardescricao);
         cadastrar = view.findViewById(R.id.doarcadastrar);
-        validadefoto = view.findViewById(R.id.doardata);
 
 
         cadastrar.setOnClickListener(new View.OnClickListener() {
@@ -69,15 +66,17 @@ public class DoarFragment extends Fragment implements DatePickerDialog.OnDateSet
                 }
             }
         });
-        validadefoto.setOnClickListener(new View.OnClickListener() {
+
+        validade.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View v) {
-                DialogFragment datePicker = new DatePickerFragment();
-                datePicker.setTargetFragment(DoarFragment.this, 0);
-                datePicker.show(getFragmentManager(), "date picker");
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    DialogFragment datePicker = new DatePickerFragment();
+                    datePicker.setTargetFragment(DoarFragment.this, 0);
+                    datePicker.show(getFragmentManager(), "date picker");
+                }
             }
         });
-
 
         return view;
 

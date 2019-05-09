@@ -21,6 +21,7 @@ class Doavel() {
         this.telefone = telefone
         this.tipo = tipo
         this.localizacao = localizacao
+        this.dataPublicada = Date().toString()
     }
 
     fun salvar() {
