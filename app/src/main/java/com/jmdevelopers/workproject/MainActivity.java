@@ -1,8 +1,8 @@
 package com.jmdevelopers.workproject;
 
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.jmdevelopers.workproject.Fragments.DoarFragment;
@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         viewPager = findViewById(R.id.viewpager);
         smartTabLayout = findViewById(R.id.viewpagertab);
         getSupportActionBar().setElevation(0);
