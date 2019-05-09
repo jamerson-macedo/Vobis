@@ -1,6 +1,7 @@
 package com.jmdevelopers.workproject.Fragments
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +21,10 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

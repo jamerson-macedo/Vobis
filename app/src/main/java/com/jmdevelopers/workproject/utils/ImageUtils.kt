@@ -1,8 +1,11 @@
 package com.jmdevelopers.workproject.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 
@@ -15,10 +18,10 @@ class ImageUtils {
             return ByteArrayInputStream(baos.toByteArray())
         }
 
-        fun selectByGallery(activity: Activity, codeRequest: Int) {
+        fun selectByGallery(context: Activity, codeRequest: Int) {
             val intent = Intent(Intent.ACTION_GET_CONTENT)
             intent.type = "image/*"
-            activity.startActivityForResult(intent, codeRequest)
+            context.startActivityForResult(intent, codeRequest)
         }
     }
 }

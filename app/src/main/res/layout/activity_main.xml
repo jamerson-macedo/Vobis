@@ -40,7 +40,7 @@
         app:stl_underlineThickness="1dp" />
 
     <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpager"
+        android:id="@+id/viewpage"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
