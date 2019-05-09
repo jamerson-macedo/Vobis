@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.jmdevelopers.workproject">
+    package="com.br.vobis">
 
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
@@ -19,7 +19,7 @@
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="com.jmdevelopers.workproject"
+            android:authorities="com.br.vobis"
             android:enabled="true"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -28,7 +28,7 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.br.vobis.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

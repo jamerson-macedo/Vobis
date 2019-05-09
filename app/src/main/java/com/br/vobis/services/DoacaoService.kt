@@ -1,3 +1,3 @@
-package com.jmdevelopers.workproject.services
+package com.br.vobis.services
 
 class DoacaoService : EntityService("doacao")

@@ -1,11 +1,8 @@
-package com.jmdevelopers.workproject.utils
+package com.br.vobis.utils
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 

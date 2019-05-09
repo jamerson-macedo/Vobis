@@ -1,4 +1,4 @@
-package com.jmdevelopers.workproject.Fragments;
+package com.br.vobis.fragments;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.jmdevelopers.workproject.R;
+import com.br.vobis.R;
 
 
 public class MinhasDoacoesFragment extends Fragment {

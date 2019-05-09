@@ -1,16 +1,16 @@
-package com.jmdevelopers.workproject.Fragments
+package com.br.vobis.fragments
 
 import android.app.DatePickerDialog
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.jmdevelopers.workproject.Helper.DatePickerFragment
-import com.jmdevelopers.workproject.R
-import com.jmdevelopers.workproject.model.Doavel
-import com.jmdevelopers.workproject.utils.ImageUtils
+import com.br.vobis.helper.DatePickerFragment
+import com.br.vobis.R
+import com.br.vobis.model.Doavel
+import com.br.vobis.utils.ImageUtils
+import kotlinx.android.synthetic.main.fragment_doar.*
 import java.text.DateFormat
 import java.util.*
 
@@ -23,24 +23,8 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         private const val PICK_IMAGE_REQUEST = 7
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_doar, container, false)
-
-        // Components
-        val edt_name = view.findViewById<EditText>(R.id.edt_name)
-        val edt_description = view.findViewById<EditText>(R.id.edt_description)
-        val edt_location = view.findViewById<EditText>(R.id.edt_location)
-        val edt_phone = view.findViewById<EditText>(R.id.edt_phone)
-        val edt_validity = view.findViewById<EditText>(R.id.edt_validity)
-        val edt_type = view.findViewById<Spinner>(R.id.spinner_type)
-
-        val btn_add_photo = view.findViewById<ImageView>(R.id.btn_add_photo)
-        val btn_submit = view.findViewById<Button>(R.id.btn_submit)
-
 
         // Events
         btn_add_photo.setOnClickListener {
@@ -51,7 +35,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             val name = edt_name.text.toString().trim()
             val phone = edt_phone.text.toString().trim()
             val location = edt_location.text.toString().trim()
-            val type = edt_type.prompt.toString().trim()
+            val type = spinner_type.prompt.toString().trim()
             val validity = edt_validity.text.toString().trim()
             val description = edt_description.text.toString().trim()
 
@@ -81,15 +65,12 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        val c = Calendar.getInstance()
-        c.set(Calendar.YEAR, year)
-        c.set(Calendar.MONTH, month)
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
-        val edt_validity = view.findViewById<EditText>(R.id.edt_validity)
-
+        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.time)
         edt_validity.setText(dateStr)
     }
-}// Required empty public constructor
-
+}

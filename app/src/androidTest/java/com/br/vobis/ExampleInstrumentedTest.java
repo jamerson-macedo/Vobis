@@ -1,4 +1,4 @@
-package com.jmdevelopers.workproject;
+package com.br.vobis;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 

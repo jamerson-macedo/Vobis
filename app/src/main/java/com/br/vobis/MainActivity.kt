@@ -1,12 +1,12 @@
-package com.jmdevelopers.workproject
+package com.br.vobis
 
 import android.content.Intent
 import androidx.viewpager.widget.ViewPager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 
-import com.jmdevelopers.workproject.Fragments.DoarFragment
-import com.jmdevelopers.workproject.Fragments.MinhasDoacoesFragment
+import com.br.vobis.fragments.DoarFragment
+import com.br.vobis.fragments.MinhasDoacoesFragment
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems

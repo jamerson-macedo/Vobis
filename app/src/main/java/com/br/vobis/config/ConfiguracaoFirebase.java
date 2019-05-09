@@ -1,4 +1,4 @@
-package com.jmdevelopers.workproject.Config;
+package com.br.vobis.config;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;

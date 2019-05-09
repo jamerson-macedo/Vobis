@@ -1,4 +1,4 @@
-package com.jmdevelopers.workproject;
+package com.br.vobis;
 
 import org.junit.Test;
 

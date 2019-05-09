@@ -1,42 +1,42 @@
 {
   "project_info": {
-    "project_number": "1013858201990",
-    "firebase_url": "https://workproject-1210f.firebaseio.com",
-    "project_id": "workproject-1210f",
-    "storage_bucket": "workproject-1210f.appspot.com"
+    "project_number": "366764784167",
+    "firebase_url": "https://vobis-3c93f.firebaseio.com",
+    "project_id": "vobis-3c93f",
+    "storage_bucket": "vobis-3c93f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1013858201990:android:aba7c9457e6b3294",
+        "mobilesdk_app_id": "1:366764784167:android:efb6dbdac089d3b6",
         "android_client_info": {
-          "package_name": "com.jmdevelopers.workproject"
+          "package_name": "com.br.vobis"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1013858201990-6vc56q7b67a4i7h6vna0qsc1hl9dphcv.apps.googleusercontent.com",
+          "client_id": "366764784167-skoa8o4h6ubqb7plkhn7nbhiv2qj9vbk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.jmdevelopers.workproject",
-            "certificate_hash": "a575a5fcd0ff9d71d1cf673ddc9279f0aa4ad94d"
+            "package_name": "com.br.vobis",
+            "certificate_hash": "6450ec2107103529e507a6ffa0e9b703ee365b11"
           }
         },
         {
-          "client_id": "1013858201990-13sdl52plfb5pprqvqgdkfupvsur08lc.apps.googleusercontent.com",
+          "client_id": "366764784167-ukd5r0m47824bl2ql40qhfr2qec52fgh.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBfpPXv6ARjvBtXjN2iTTC2OpvKBd7cgEQ"
+          "current_key": "AIzaSyAaDBkdv1AmE0Jh9NJ72JGiRKduiNJupnM"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1013858201990-13sdl52plfb5pprqvqgdkfupvsur08lc.apps.googleusercontent.com",
+              "client_id": "366764784167-ukd5r0m47824bl2ql40qhfr2qec52fgh.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

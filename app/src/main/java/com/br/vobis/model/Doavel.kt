@@ -1,6 +1,6 @@
-package com.jmdevelopers.workproject.model
+package com.br.vobis.model
 
-import com.jmdevelopers.workproject.services.DoacaoService
+import com.br.vobis.services.DoacaoService
 import java.util.*
 
 class Doavel() {
