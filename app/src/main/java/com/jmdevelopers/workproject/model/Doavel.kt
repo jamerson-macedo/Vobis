@@ -24,7 +24,11 @@ class Doavel() {
         this.dataPublicada = Date().toString()
     }
 
-    fun salvar() {
+    fun addAttach(storeLink: String) {
+        this.fotos?.add(storeLink)
+    }
+
+    fun save() {
         DoacaoService().api.push().setValue(this)
     }
 }

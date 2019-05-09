@@ -7,35 +7,36 @@
     android:fillViewport="true"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".Fragments.MinhasDoacoesFragment">
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/doarnome"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_person_black_24dp"
                 android:hint="Nome" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/doarloc"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -45,50 +46,48 @@
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doarnome">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_name">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_location_on_black_24dp"
                 android:hint="Localização" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/doartipo"
+        <Spinner
+            android:id="@+id/spinner_type"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:layout_weight="1"
+            android:spinnerMode="dialog"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doarloc">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Tipo" />
-        </android.support.design.widget.TextInputLayout>
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/doartelefone"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_phone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
 
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doartipo">
+            app:layout_constraintTop_toBottomOf="@+id/spinner_type">
 
             <com.github.pinball83.maskededittext.MaskedEditText
+                android:id="@+id/edt_phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_local_phone_black_24dp"
@@ -96,11 +95,11 @@
                 android:inputType="number"
                 app:mask="(**)*****-****"
                 app:notMaskedSymbol="*" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/validadeLayoutInput"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_validity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -112,10 +111,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doartelefone">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_phone">
 
             <com.github.pinball83.maskededittext.MaskedEditText
-                android:id="@+id/doarvalidade"
+                android:id="@+id/edt_validity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_today_black_24dp"
@@ -125,10 +124,10 @@
                 app:mask="**/**/****"
                 app:notMaskedSymbol="*" />
 
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/doardescricao"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -139,15 +138,16 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/validadeLayoutInput">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_validity">
 
-            <android.support.design.widget.TextInputEditText
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableEnd="@drawable/ic_message_black_24dp"
                 android:drawableRight="@drawable/ic_message_black_24dp"
                 android:hint="Descrição" />
-        </android.support.design.widget.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
@@ -160,7 +160,7 @@
             android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/doardescricao">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_description">
 
             <LinearLayout
                 android:id="@+id/containerPhotos"
@@ -169,7 +169,7 @@
                 android:weightSum="100">
 
                 <ImageView
-                    android:id="@+id/btnAddPhoto"
+                    android:id="@+id/btn_add_photo"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     app:srcCompat="@drawable/ic_add_a_photo_black_24dp" />
@@ -186,7 +186,7 @@
         </HorizontalScrollView>
 
         <Button
-            android:id="@+id/doarcadastrar"
+            android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -200,6 +200,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView" />
 
-    </android.support.constraint.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
