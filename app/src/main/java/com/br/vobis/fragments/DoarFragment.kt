@@ -1,13 +1,18 @@
 package com.br.vobis.fragments
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import com.br.vobis.helper.DatePickerFragment
+import android.widget.DatePicker
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.R
+import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Doavel
 import com.br.vobis.utils.ImageUtils
 import kotlinx.android.synthetic.main.fragment_doar.*
@@ -18,16 +23,31 @@ import java.util.*
 class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener {
 
     private lateinit var itemDoavel: Doavel
+    private lateinit var imageUri: Uri
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_doar, container, false)
+        return inflater.inflate(R.layout.fragment_doar, container, false)
+    }
 
-        // Events
-        btn_add_photo.setOnClickListener {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
+            if (data != null) {
+                imageUri = data.data!!
+
+                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+                imageView.setImageBitmap(bitmap)
+            }
+        }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+        btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
@@ -54,9 +74,6 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 datePicker.show(fragmentManager!!, "date picker")
             }
         }
-
-        return view
-
     }
 
     private fun alertError(error: String) {
@@ -65,12 +82,13 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        val c = Calendar.getInstance()
+        c.set(Calendar.YEAR, year)
+        c.set(Calendar.MONTH, month)
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.time)
+        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
         edt_validity.setText(dateStr)
     }
-}
+}// Required empty public constructor
+
