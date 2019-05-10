@@ -1,5 +1,6 @@
 package com.br.vobis.model
 
+import com.br.vobis.helper.DataCustom
 import com.br.vobis.services.DoacaoService
 import java.util.*
 
@@ -10,6 +11,7 @@ class Doavel() {
     var validade: String? = null
     var telefone: String? = null
     var tipo: String? = null
+    var statusdoacao: String? = null
     var dataPublicada: String? = null
     var localizacao: String? = null
     val fotos: ArrayList<String>? = arrayListOf()
@@ -20,8 +22,9 @@ class Doavel() {
         this.validade = validade
         this.telefone = telefone
         this.tipo = tipo
+        this.statusdoacao = "Em espera..."
         this.localizacao = localizacao
-        this.dataPublicada = Date().toString()
+        this.dataPublicada = DataCustom.dataAtual()
     }
 
     fun addAttach(storeLink: String) {

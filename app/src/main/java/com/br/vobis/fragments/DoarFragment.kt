@@ -8,6 +8,8 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +26,8 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
+    val category = arrayOf("Defina uma categoria", "Alimentos", "Remedios", "Roupas", "Eletrodomesticos", "Outros")
+
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
@@ -42,10 +46,29 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 imageView.setImageBitmap(bitmap)
             }
         }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+        if (spinner_type != null) {
+            val arrayAdapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_item, category)
+            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner_type.adapter = arrayAdapter
+
+            spinner_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                    Toast.makeText(activity, category[position], Toast.LENGTH_SHORT).show()
+
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+
+                }
+
+
+            }
+        }
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -55,7 +78,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             val name = edt_name.text.toString().trim()
             val phone = edt_phone.text.toString().trim()
             val location = edt_location.text.toString().trim()
-            val type = spinner_type.prompt.toString().trim()
+            val type = spinner_type?.prompt.toString().trim()
             val validity = edt_validity.text.toString().trim()
             val description = edt_description.text.toString().trim()
 

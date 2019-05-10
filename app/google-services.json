@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "366764784167-r6iqpbujdnj158u29dfrr4stgo0e6lhj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.br.vobis",
+            "certificate_hash": "a575a5fcd0ff9d71d1cf673ddc9279f0aa4ad94d"
+          }
+        },
+        {
           "client_id": "366764784167-skoa8o4h6ubqb7plkhn7nbhiv2qj9vbk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
