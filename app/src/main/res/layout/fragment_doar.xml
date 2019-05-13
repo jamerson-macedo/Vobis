@@ -13,27 +13,34 @@
         tools:context=".fragments.MinhasDoacoesFragment">
 
 
-        <com.google.android.material.textfield.TextInputLayout
+        <com.github.florent37.materialtextfield.MaterialTextField
             android:id="@+id/layout_edt_name"
             android:layout_width="0dp"
+
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+
+            app:mtf_animationDuration="100"
+            app:mtf_image="@drawable/icondoacao"
+            app:mtf_labelColor="#9A9A9A"
+            app:mtf_openKeyboardOnFocus="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_name"
+                android:hint="Nome da doação"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawableRight="@drawable/ic_person_black_24dp"
-                android:hint="Nome" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+                android:textColor="#333" />
+
+        </com.github.florent37.materialtextfield.MaterialTextField>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_location"
@@ -53,7 +60,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/ic_location_on_black_24dp"
-                android:hint="Localização" />
+                android:hint="Localização para a Busca da doação" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -158,7 +165,11 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/buttons"
             android:text="Doar"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"

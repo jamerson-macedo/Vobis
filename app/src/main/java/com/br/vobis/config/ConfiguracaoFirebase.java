@@ -6,7 +6,6 @@ import com.google.firebase.database.FirebaseDatabase;
 public class ConfiguracaoFirebase {
 
 
-
     private static DatabaseReference firebase;
 
     //retorna a instancia do FirebaseDatabase

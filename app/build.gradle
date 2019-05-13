@@ -36,6 +36,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.9'
     implementation 'com.ogaclejapan.smarttablayout:library:2.0.0@aar'
     implementation 'com.ogaclejapan.smarttablayout:utils-v4:2.0.0@aar'
+    implementation 'com.github.florent37:materialtextfield:1.0.7'
+
 
     // Tests
     testImplementation 'junit:junit:4.12'

@@ -68,6 +68,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
                     Toast.makeText(activity, category[position], Toast.LENGTH_SHORT).show()
 
+                    spinner_type.getItemAtPosition(position).toString()
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
