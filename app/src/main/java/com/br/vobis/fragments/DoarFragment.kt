@@ -17,8 +17,11 @@ import com.br.vobis.R
 import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Doavel
 import com.br.vobis.utils.ImageUtils
+import com.google.android.gms.tasks.Continuation
+import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_doar.*
 import java.text.DateFormat
 import java.util.*
@@ -96,7 +99,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             } else {
                 itemDoavel = Doavel(name, description, validity, phone, type, location)
                 itemDoavel.save()
-                uploadimage()
+                uploadImage()
                 Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
 
             }
@@ -116,12 +119,16 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     }
 
-    private fun uploadimage() {
-
+    private fun uploadImage() {
         val imagemref = reference!!.child("images/" + UUID.randomUUID().toString())
-        imagemref.putFile(imageUri).addOnSuccessListener { Toast.makeText(activity, "upload concluido", Toast.LENGTH_LONG).show() }
-
-
+        imagemref.putFile(imageUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
+            return@Continuation imagemref.downloadUrl
+        }).addOnCompleteListener {
+            if (it.isSuccessful) {
+                val urlFile = it.result
+                this.itemDoavel.addAttach(urlFile.toString())
+            }
+        }
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
