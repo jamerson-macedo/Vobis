@@ -7,6 +7,8 @@ open class EntityService(entity: String) {
     // Static attr
     companion object {
         val firebase = FirebaseDatabase.getInstance().reference
+
+
     }
 
     var api: DatabaseReference

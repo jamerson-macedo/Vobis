@@ -17,6 +17,8 @@ import com.br.vobis.R
 import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Doavel
 import com.br.vobis.utils.ImageUtils
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_doar.*
 import java.text.DateFormat
 import java.util.*
@@ -26,6 +28,9 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
+    var storage: FirebaseStorage? = FirebaseStorage.getInstance()
+    var reference: StorageReference? = storage!!.reference
+
     val category = arrayOf("Defina uma categoria", "Alimentos", "Remedios", "Roupas", "Eletrodomesticos", "Outros")
 
 
@@ -43,7 +48,10 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 imageUri = data.data!!
 
                 val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+                ImageUtils.compressImage(bitmap)
+
                 imageView.setImageBitmap(bitmap)
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -87,6 +95,9 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             } else {
                 itemDoavel = Doavel(name, description, validity, phone, type, location)
                 itemDoavel.save()
+                uploadimage()
+                Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
+
             }
         }
 
@@ -101,6 +112,14 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     private fun alertError(error: String) {
         Toast.makeText(activity, error, Toast.LENGTH_LONG).show()
+
+    }
+
+    private fun uploadimage() {
+
+        val imagemref = reference!!.child("images/" + UUID.randomUUID().toString())
+        imagemref.putFile(imageUri).addOnSuccessListener { Toast.makeText(activity, "upload concluido", Toast.LENGTH_LONG).show() }
+
 
     }
 
