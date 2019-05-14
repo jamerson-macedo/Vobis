@@ -14,6 +14,7 @@ import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.R
+import com.br.vobis.config.ConfiguracaoFirebase
 import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Doavel
 import com.br.vobis.utils.ImageUtils
@@ -34,7 +35,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     var storage: FirebaseStorage? = FirebaseStorage.getInstance()
     var reference: StorageReference? = storage!!.reference
 
-    val category = arrayOf("Defina uma categoria", "Alimentos", "Remedios", "Roupas", "Eletrodomesticos", "Outros")
+    val category = ConfiguracaoFirebase.getcategorias()
 
 
     companion object {
@@ -55,6 +56,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
                 imageView.setImageBitmap(bitmap)
 
+
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -69,7 +71,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
             spinner_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    Toast.makeText(activity, category[position], Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, category[position].toString(), Toast.LENGTH_SHORT).show()
 
                     spinner_type.getItemAtPosition(position).toString()
                 }
@@ -98,8 +100,15 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 alertError("Preencha os Campos!")
             } else {
                 itemDoavel = Doavel(name, description, validity, phone, type, location)
-                itemDoavel.save()
-                uploadImage()
+                uploadImage().addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val urlFile = it.result
+                        this.itemDoavel.addAttach(urlFile.toString())
+                        itemDoavel.save()
+                    }
+                }
+
+
                 Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
 
             }
@@ -119,16 +128,11 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     }
 
-    private fun uploadImage() {
+    private fun uploadImage(): Task<Uri> {
         val imagemref = reference!!.child("images/" + UUID.randomUUID().toString())
-        imagemref.putFile(imageUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
+        return imagemref.putFile(imageUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
             return@Continuation imagemref.downloadUrl
-        }).addOnCompleteListener {
-            if (it.isSuccessful) {
-                val urlFile = it.result
-                this.itemDoavel.addAttach(urlFile.toString())
-            }
-        }
+        })
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
