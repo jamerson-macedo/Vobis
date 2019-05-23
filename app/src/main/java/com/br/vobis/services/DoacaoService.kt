@@ -1,3 +1,5 @@
 package com.br.vobis.services
 
-class DoacaoService : EntityService("doacao")
+import com.br.vobis.model.Doavel
+
+class DoacaoService : EntityService<Doavel>("doacao")

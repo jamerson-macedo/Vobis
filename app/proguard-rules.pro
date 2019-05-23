@@ -20,3 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFil
 
+-keepclassmembers enum * {
+    public static **[] values();
+    public static ** valueOf(java.lang.String);
+}

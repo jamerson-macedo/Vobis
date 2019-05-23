@@ -26,8 +26,10 @@ class MainActivity : AppCompatActivity() {
 
         supportActionBar!!.title = "Doações"
         val adapter = FragmentPagerItemAdapter(supportFragmentManager,
-                FragmentPagerItems.with(this).add("Doar", DoarFragment::class.java).add("Minhas Doações", MinhasDoacoesFragment::class.java).add("Necessidades", NecessidadesFragment::class.java
-                )
+                FragmentPagerItems.with(this)
+                        .add("Doar", DoarFragment::class.java)
+                        .add("Minhas Doações", MinhasDoacoesFragment::class.java)
+                        .add("Necessidades", NecessidadesFragment::class.java)
                         .create())
         viewPager!!.adapter = adapter
         smartTabLayout!!.setViewPager(viewPager)

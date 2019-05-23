@@ -8,17 +8,17 @@ import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.R
-import com.br.vobis.config.ConfiguracaoFirebase
 import com.br.vobis.helper.DatePickerFragment
+import com.br.vobis.model.Category
 import com.br.vobis.model.Doavel
+import com.br.vobis.services.CategoryService
+import com.br.vobis.services.DoacaoService
 import com.br.vobis.utils.ImageUtils
-import com.google.android.gms.tasks.Continuation
 import com.google.android.gms.tasks.Task
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -32,10 +32,8 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
-    var storage: FirebaseStorage? = FirebaseStorage.getInstance()
-    var reference: StorageReference? = storage!!.reference
-
-    val category = ConfiguracaoFirebase.getcategorias()
+    private val categories = arrayListOf<String>()
+    private var storage: FirebaseStorage? = FirebaseStorage.getInstance()
 
 
     companion object {
@@ -47,42 +45,26 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK) {
-            if (data != null) {
-                imageUri = data.data!!
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            imageUri = data.data!!
 
-                val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
-                ImageUtils.compressImage(bitmap)
-
-                imageView.setImageBitmap(bitmap)
-
-
-            }
+            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
+            ImageUtils.compressImage(bitmap)
+            imageView.setImageBitmap(bitmap)
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (spinner_type != null) {
-            val arrayAdapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_item, category)
-            arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            spinner_type.adapter = arrayAdapter
 
-            spinner_type.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
-                    Toast.makeText(activity, category[position].toString(), Toast.LENGTH_SHORT).show()
+        this.fetchCategories()
 
-                    spinner_type.getItemAtPosition(position).toString()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-
-                }
-
-
-            }
-        }
+        // Set options of Spinner
+        val arrayAdapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_item, categories)
+        arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
+        spinner_type.prompt = "Selecione a categoria"
+        spinner_type.adapter = arrayAdapter
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -92,25 +74,27 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             val name = edt_name.text.toString().trim()
             val phone = edt_phone.text.toString().trim()
             val location = edt_location.text.toString().trim()
-            val type = spinner_type?.prompt.toString().trim()
+            val type = spinner_type?.selectedItem.toString().trim()
             val validity = edt_validity.text.toString().trim()
             val description = edt_description.text.toString().trim()
 
             if (arrayOf(name, phone, location, type, validity, description).contains("")) {
-                alertError("Preencha os Campos!")
+                Toast.makeText(activity, "Preencha os Campos!", Toast.LENGTH_LONG).show()
             } else {
                 itemDoavel = Doavel(name, description, validity, phone, type, location)
+
                 uploadImage().addOnCompleteListener {
                     if (it.isSuccessful) {
-                        val urlFile = it.result
+
+                        val urlFile = it.result!!.result
                         this.itemDoavel.addAttach(urlFile.toString())
-                        itemDoavel.save()
+
+                        DoacaoService().add(itemDoavel).addOnSuccessListener { document ->
+                            itemDoavel.id = document.id
+                            Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
+                        }
                     }
                 }
-
-
-                Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
-
             }
         }
 
@@ -123,16 +107,26 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
     }
 
-    private fun alertError(error: String) {
-        Toast.makeText(activity, error, Toast.LENGTH_LONG).show()
-
+    private fun fetchCategories() {
+        CategoryService().getAll().addOnSuccessListener {
+            it.documents.forEach { document ->
+                val category = document.toObject(Category::class.java)!!
+                categories.add(category.name)
+            }
+        }
     }
 
-    private fun uploadImage(): Task<Uri> {
-        val imagemref = reference!!.child("images/" + UUID.randomUUID().toString())
-        return imagemref.putFile(imageUri).continueWithTask(Continuation<UploadTask.TaskSnapshot, Task<Uri>> {
-            return@Continuation imagemref.downloadUrl
-        })
+    private fun uploadImage(): Task<Task<Uri>> {
+        val storageReference: StorageReference? = storage!!.reference
+        val imagemref = storageReference!!.child("doacoes/" + UUID.randomUUID().toString())
+
+        return imagemref.putFile(imageUri).continueWith { task: Task<UploadTask.TaskSnapshot> ->
+            if (!task.isSuccessful) {
+                throw task.exception!!
+            }
+
+            return@continueWith imagemref.downloadUrl
+        }
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
@@ -144,5 +138,5 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
         edt_validity.setText(dateStr)
     }
-}// Required empty public constructor
+}
 
