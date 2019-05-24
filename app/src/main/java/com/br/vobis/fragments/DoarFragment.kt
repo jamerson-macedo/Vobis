@@ -33,7 +33,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
     private val categories = mutableListOf<String>()
-    private var storage: FirebaseStorage? = FirebaseStorage.getInstance()
+    private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
 
 
     companion object {
@@ -117,7 +117,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     private fun uploadImage(): Task<Task<Uri>> {
-        val storageReference: StorageReference? = storage!!.reference
+        val storageReference: StorageReference? = storage.reference
         val imagemref = storageReference!!.child("doacoes/" + UUID.randomUUID().toString())
 
         return imagemref.putFile(imageUri).continueWith { task: Task<UploadTask.TaskSnapshot> ->

@@ -15,38 +15,42 @@ import kotlinx.android.synthetic.main.activity_phone_auth.*
 import java.util.concurrent.TimeUnit
 
 class PhoneAuthActivity : AppCompatActivity() {
-    lateinit var mAuth: FirebaseAuth
-    lateinit var mcallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    var verificaionid = ""
+    private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
+    private lateinit var mcallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
+    var verificaionId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_auth)
-        this.mAuth = FirebaseAuth.getInstance()
+
         btn_cadastrar.setOnClickListener {
             verify()
-
-
         }
         btn_verificar.setOnClickListener {
-
-            autenticate()
-
+            authenticate()
         }
 
     }
 
-    private fun autenticate() {
-        val verifycode = verify_phone.text.toString()
-        val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(verificaionid, verifycode)
-        signin(credential)
+    override fun onStart() {
+        super.onStart()
 
+        if (mAuth.currentUser != null) {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
+    }
+
+    private fun authenticate() {
+        val verifyCode = verify_phone.text.toString()
+        val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(verificaionId, verifyCode)
+
+        signIn(credential)
     }
 
     private fun verifyCallbacks() {
         mcallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(p0: PhoneAuthCredential?) {
-                signin(p0)
+            override fun onVerificationCompleted(credential: PhoneAuthCredential?) {
+                signIn(credential)
             }
 
             override fun onVerificationFailed(p0: FirebaseException?) {
@@ -55,18 +59,16 @@ class PhoneAuthActivity : AppCompatActivity() {
 
             override fun onCodeSent(p0: String?, p1: PhoneAuthProvider.ForceResendingToken?) {
                 super.onCodeSent(p0, p1)
-                verificaionid = p0.toString()
+
+                verificaionId = p0.toString()
             }
-
-
         }
 
     }
 
-    private fun signin(p0: PhoneAuthCredential?) {
-
-        if (p0 != null) {
-            mAuth.signInWithCredential(p0).addOnCompleteListener { task: Task<AuthResult> ->
+    private fun signIn(credential: PhoneAuthCredential?) {
+        if (credential != null) {
+            mAuth.signInWithCredential(credential).addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
                     Toast.makeText(this, "Conta criada com sucesso", Toast.LENGTH_LONG).show()
                     val intent = Intent(this, MainActivity::class.java)
@@ -74,12 +76,8 @@ class PhoneAuthActivity : AppCompatActivity() {
 
                 } else {
                     Toast.makeText(this, "sem codigo", Toast.LENGTH_LONG).show()
-
-
                 }
             }
-
-
         }
     }
 
@@ -88,20 +86,6 @@ class PhoneAuthActivity : AppCompatActivity() {
         verifyCallbacks()
         val phone = cadas_phone.text.toString()
         Log.d("numberhone", phone)
-        PhoneAuthProvider.getInstance().verifyPhoneNumber("+55 " + phone, 60, TimeUnit.SECONDS, this, mcallbacks)
-
+        PhoneAuthProvider.getInstance().verifyPhoneNumber("+55 $phone", 60, TimeUnit.SECONDS, this, mcallbacks)
     }
-
-    override fun onStart() {
-        super.onStart()
-        if (mAuth.currentUser != null) {
-
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-
-        }
-
-
-    }
-
 }
