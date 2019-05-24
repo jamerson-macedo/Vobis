@@ -32,7 +32,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
-    private val categories = arrayListOf<String>()
+    private val categories = mutableListOf<String>()
     private var storage: FirebaseStorage? = FirebaseStorage.getInstance()
 
 
@@ -45,6 +45,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
             imageUri = data.data!!
 
@@ -52,19 +53,18 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             ImageUtils.compressImage(bitmap)
             imageView.setImageBitmap(bitmap)
         }
-        super.onActivityResult(requestCode, resultCode, data)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         this.fetchCategories()
+        this.initComponents()
+    }
 
+    private fun initComponents() {
         // Set options of Spinner
-        val arrayAdapter = ArrayAdapter(activity!!, android.R.layout.simple_spinner_item, categories)
-        arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item)
         spinner_type.prompt = "Selecione a categoria"
-        spinner_type.adapter = arrayAdapter
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -85,7 +85,6 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
                 uploadImage().addOnCompleteListener {
                     if (it.isSuccessful) {
-
                         val urlFile = it.result!!.result
                         this.itemDoavel.addAttach(urlFile.toString())
 
@@ -100,9 +99,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
         edt_validity.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
             if (hasFocus) {
-                val datePicker = DatePickerFragment()
-                datePicker.setTargetFragment(this, 0)
-                datePicker.show(fragmentManager!!, "date picker")
+                this.showCalendar()
             }
         }
     }
@@ -113,6 +110,9 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 val category = document.toObject(Category::class.java)!!
                 categories.add(category.name)
             }
+
+            val adapter = ArrayAdapter<String>(activity!!, android.R.layout.simple_spinner_dropdown_item, categories)
+            spinner_type.adapter = adapter
         }
     }
 
@@ -130,13 +130,19 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        val c = Calendar.getInstance()
-        c.set(Calendar.YEAR, year)
-        c.set(Calendar.MONTH, month)
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+        val cInstance = Calendar.getInstance()
+        cInstance.set(Calendar.YEAR, year)
+        cInstance.set(Calendar.MONTH, month)
+        cInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth)
 
-        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(c.time)
+        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(cInstance.time)
         edt_validity.setText(dateStr)
+    }
+
+    private fun showCalendar() {
+        val datePicker = DatePickerFragment()
+        datePicker.setTargetFragment(this, 0)
+        datePicker.show(fragmentManager!!, "date picker")
     }
 }
 
