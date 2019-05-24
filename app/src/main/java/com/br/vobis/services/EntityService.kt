@@ -26,7 +26,7 @@ open class EntityService<T : Any>(collection: String) {
         return this.collectionReference.document(id).get()
     }
 
-    inline fun <reified T : Any> add(data: T): Task<DocumentSnapshot> {
+    fun add(data: T): Task<DocumentSnapshot> {
         val newDoc = this.collectionReference.document()
         newDoc.set(data)
         return newDoc.get()
