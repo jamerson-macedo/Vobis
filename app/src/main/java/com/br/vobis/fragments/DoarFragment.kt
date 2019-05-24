@@ -20,6 +20,7 @@ import com.br.vobis.services.CategoryService
 import com.br.vobis.services.DoacaoService
 import com.br.vobis.utils.ImageUtils
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
@@ -34,6 +35,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     private lateinit var imageUri: Uri
     private val categories = mutableListOf<String>()
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
+    private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
 
     companion object {
@@ -71,8 +73,10 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
 
         btn_submit.setOnClickListener {
+            val user = mAuth.currentUser
+
+            val phone = user?.phoneNumber!!
             val name = edt_name.text.toString().trim()
-            val phone = edt_phone.text.toString().trim()
             val location = edt_location.text.toString().trim()
             val type = spinner_type?.selectedItem.toString().trim()
             val validity = edt_validity.text.toString().trim()
