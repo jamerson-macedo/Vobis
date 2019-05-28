@@ -67,12 +67,19 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
     private fun initComponents() {
         // Set options of Spinner
         spinner_type.prompt = "Selecione a categoria"
+        checkBox.setOnClickListener {
+
+            edt_validity.isEnabled = !checkBox.isChecked
+        }
+
+
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
         btn_submit.setOnClickListener {
+
             val user = mAuth.currentUser
 
             val phone = user?.phoneNumber!!
@@ -106,6 +113,8 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 this.showCalendar()
             }
         }
+
+
     }
 
     private fun fetchCategories() {
