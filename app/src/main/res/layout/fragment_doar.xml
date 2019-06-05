@@ -52,21 +52,21 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
+
         <Spinner
             android:id="@+id/spinner_type"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_weight="1"
             android:soundEffectsEnabled="true"
             android:spinnerMode="dropdown"
             android:textColor="#000000"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
-
+            app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_validity"
@@ -123,11 +123,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/buttons"
             android:text="Doar"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
@@ -135,14 +132,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_add" />
+            app:layout_constraintTop_toBottomOf="@+id/imageView"
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
             android:src="@drawable/ic_add_a_photo_black_24dp"
@@ -158,10 +155,9 @@
         <ImageView
 
             android:id="@+id/imageView"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@+id/btn_add"
             app:layout_constraintTop_toBottomOf="@+id/layout_edt_description" />
@@ -185,6 +181,17 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.58" />
+
+        <TextView
+            android:id="@+id/txtCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:text="Categoria"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -19,7 +19,6 @@ import com.br.vobis.model.Doavel
 import com.br.vobis.services.CategoryService
 import com.br.vobis.services.DoacaoService
 import com.br.vobis.utils.ImageUtils
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -31,9 +30,8 @@ import java.util.*
 
 class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener {
 
-    private lateinit var itemDoavel: Doavel
     private lateinit var imageUri: Uri
-    private val categories = mutableListOf<String>()
+
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
     private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
@@ -44,6 +42,15 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_doar, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        this.fetchCategories()
+        this.initComponents()
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -57,22 +64,10 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        this.fetchCategories()
-        this.initComponents()
-    }
-
     private fun initComponents() {
-        // Set options of Spinner
-        spinner_type.prompt = "Selecione a categoria"
         checkBox.setOnClickListener {
-
             edt_validity.isEnabled = !checkBox.isChecked
         }
-
-
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -92,19 +87,9 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             if (arrayOf(name, phone, location, type, validity, description).contains("")) {
                 Toast.makeText(activity, "Preencha os Campos!", Toast.LENGTH_LONG).show()
             } else {
-                itemDoavel = Doavel(name, description, validity, phone, type, location)
+                val newItem = Doavel(name, description, validity, phone, type, location)
 
-                uploadImage().addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val urlFile = it.result!!.result
-                        this.itemDoavel.addAttach(urlFile.toString())
-
-                        DoacaoService().add(itemDoavel).addOnSuccessListener { document ->
-                            itemDoavel.id = document.id
-                            Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
+                onSubmit(newItem)
             }
         }
 
@@ -113,12 +98,12 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
                 this.showCalendar()
             }
         }
-
-
     }
 
     private fun fetchCategories() {
         CategoryService().getAll().addOnSuccessListener {
+            val categories = mutableListOf<String>()
+
             it.documents.forEach { document ->
                 val category = document.toObject(Category::class.java)!!
                 categories.add(category.name)
@@ -129,17 +114,29 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
     }
 
-    private fun uploadImage(): Task<Task<Uri>> {
+    private fun uploadImage(): UploadTask {
         val storageReference: StorageReference? = storage.reference
-        val imagemref = storageReference!!.child("doacoes/" + UUID.randomUUID().toString())
+        val imageRef = storageReference!!.child("doacoes/" + UUID.randomUUID().toString())
 
-        return imagemref.putFile(imageUri).continueWith { task: Task<UploadTask.TaskSnapshot> ->
-            if (!task.isSuccessful) {
-                throw task.exception!!
+        return imageRef.putFile(imageUri)
+    }
+
+    private fun onSubmit(item: Doavel) {
+        uploadImage().addOnSuccessListener {
+            it.metadata?.reference?.downloadUrl?.let { urlDoc ->
+                {
+                    item.addAttach(urlDoc.toString())
+
+                    DoacaoService().add(item).addOnSuccessListener { document ->
+                        item.id = document.id
+                        Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
+                    }
+                }
             }
-
-            return@continueWith imagemref.downloadUrl
+        }.addOnFailureListener {
+            Toast.makeText(activity, "Falha ao enviar imagem", Toast.LENGTH_SHORT).show()
         }
+
     }
 
     override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
