@@ -1,10 +1,16 @@
 package com.br.vobis.fragments
 
+import android.Manifest.permission
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +18,8 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.ActivityCompat.requestPermissions
 import com.br.vobis.R
 import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Category
@@ -19,6 +27,10 @@ import com.br.vobis.model.Doavel
 import com.br.vobis.services.CategoryService
 import com.br.vobis.services.DoacaoService
 import com.br.vobis.utils.ImageUtils
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -28,7 +40,47 @@ import java.text.DateFormat
 import java.util.*
 
 
-class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener {
+class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+    val LOCATION_CODE = 1
+
+
+    override fun onConnected(p0: Bundle?) {
+        if (ActivityCompat.checkSelfPermission(activity!!, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestpermission()
+
+        }
+
+        fusedLocationProviderClient.lastLocation.addOnSuccessListener { location: Location? ->
+            location?.let {
+                it.latitude
+                it.longitude
+                var latitude = it.latitude
+                var longitude = it.longitude
+                edt_location.setText(latitude.toString())
+                var valor = getCompleteAddressString(latitude, longitude)
+                edt_location.setText(valor)
+
+            }
+
+        }
+    }
+
+    private fun requestpermission() {
+        requestPermissions(activity!!, arrayOf(permission.ACCESS_FINE_LOCATION), LOCATION_CODE)
+
+    }
+
+    override fun onConnectionSuspended(p0: Int) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    // google
+    private lateinit var googleApiClient: GoogleApiClient
+    private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
 
     private lateinit var imageUri: Uri
 
@@ -51,7 +103,9 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         this.fetchCategories()
         this.initComponents()
 
+
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -64,7 +118,13 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
     }
 
+
     private fun initComponents() {
+        googleApiClient = GoogleApiClient.Builder(activity!!).addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this).addApi(LocationServices.API).build()
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity!!)
+
+
         checkBox.setOnClickListener {
             edt_validity.isEnabled = !checkBox.isChecked
         }
@@ -74,6 +134,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         }
 
         btn_submit.setOnClickListener {
+
 
             val user = mAuth.currentUser
 
@@ -154,5 +215,49 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         datePicker.setTargetFragment(this, 0)
         datePicker.show(fragmentManager!!, "date picker")
     }
+
+    override fun onStart() {
+        super.onStart()
+        googleApiClient.connect()
+    }
+
+    override fun onStop() {
+        if (googleApiClient.isConnected) {
+            googleApiClient.disconnect()
+        }
+        super.onStop()
+    }
+
+    private fun getCompleteAddressString(LATITUDE: Double, LONGITUDE: Double): String {
+        var strAdd = ""
+        val geocoder = Geocoder(activity!!, Locale.getDefault())
+        try {
+            val addresses: List<Address> = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
+            if (addresses != null && addresses.size > 0) {
+                val returnedAddress = addresses[0]
+                val strReturnedAddress = StringBuilder("")
+                for (i in returnedAddress.maxAddressLineIndex.rangeTo(addresses.size)) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
+                    strReturnedAddress.append(returnedAddress.locale).append("\n")
+                    strReturnedAddress.append(returnedAddress.postalCode).append("\n")
+                    // nome da rua
+                    strReturnedAddress.append(returnedAddress.thoroughfare)
+                    strReturnedAddress.append(returnedAddress.subThoroughfare)
+
+                }
+                strAdd = strReturnedAddress.toString()
+                Log.w("My", strReturnedAddress.toString())
+            } else {
+                Log.w("My", "No Address returned!")
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.w("M", "Canont get Address!")
+        }
+        return strAdd
+    }
+
+
+
 }
 
