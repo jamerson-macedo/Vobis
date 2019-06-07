@@ -6,15 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.br.vobis.R
-import com.br.vobis.adapters.DoacaoAdapter
-import com.br.vobis.model.Doavel
-import com.br.vobis.services.DoacaoService
+import com.br.vobis.adapters.DonationAdapter
+import com.br.vobis.model.Donation
+import com.br.vobis.services.DonationService
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentSnapshot
 import kotlinx.android.synthetic.main.fragment_minhas_doacoes.*
 
 
-class MinhasDoacoesFragment : Fragment() {
+class MyDonationsFragment : Fragment() {
 
     val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
@@ -30,17 +30,17 @@ class MinhasDoacoesFragment : Fragment() {
         val user = mAuth.currentUser
         val phone = user?.phoneNumber
 
-        DoacaoService().collectionReference.whereEqualTo("telefone", phone).get().addOnSuccessListener {
-            val items = mutableListOf<Doavel>()
+        DonationService().collectionReference.whereEqualTo("telefone", phone).get().addOnSuccessListener {
+            val items = mutableListOf<Donation>()
 
             it.documents.forEach { documentSnapshot: DocumentSnapshot? ->
-                val item = documentSnapshot?.toObject(Doavel::class.java)
+                val item = documentSnapshot?.toObject(Donation::class.java)
                 if (item != null) {
                     items.add(item)
                 }
             }
 
-            recyclerView.adapter = DoacaoAdapter(items)
+            recyclerView.adapter = DonationAdapter(items)
         }
     }
 

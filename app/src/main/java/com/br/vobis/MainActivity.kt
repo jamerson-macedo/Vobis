@@ -6,9 +6,9 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.br.vobis.fragments.DoarFragment
-import com.br.vobis.fragments.MinhasDoacoesFragment
-import com.br.vobis.fragments.NecessidadesFragment
+import com.br.vobis.fragments.DonationNeedsFragment
+import com.br.vobis.fragments.DonationsFragment
+import com.br.vobis.fragments.MyDonationsFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.ogaclejapan.smarttablayout.SmartTabLayout
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter
@@ -32,9 +32,9 @@ class MainActivity : AppCompatActivity() {
         supportActionBar!!.title = "Doações"
         val adapter = FragmentPagerItemAdapter(supportFragmentManager,
                 FragmentPagerItems.with(this)
-                        .add("Doar", DoarFragment::class.java)
-                        .add("Minhas Doações", MinhasDoacoesFragment::class.java)
-                        .add("Necessidades", NecessidadesFragment::class.java)
+                        .add("Doar", DonationsFragment::class.java)
+                        .add("Minhas Doações", MyDonationsFragment::class.java)
+                        .add("Necessidades", DonationNeedsFragment::class.java)
                         .create())
         viewPager!!.adapter = adapter
         smartTabLayout!!.setViewPager(viewPager)

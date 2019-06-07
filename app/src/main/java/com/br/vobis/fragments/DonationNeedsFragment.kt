@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import com.br.vobis.R
 
 
-class NecessidadesFragment : Fragment() {
+class DonationNeedsFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 

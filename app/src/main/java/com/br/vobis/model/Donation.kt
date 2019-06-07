@@ -2,7 +2,7 @@ package com.br.vobis.model
 
 import com.google.firebase.Timestamp
 
-class Doavel : IEntity {
+class Donation : IEntity {
 
     override var id: String? = null
     var nome: String = ""

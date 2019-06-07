@@ -23,14 +23,12 @@ import androidx.core.app.ActivityCompat.requestPermissions
 import com.br.vobis.R
 import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Category
-import com.br.vobis.model.Doavel
+import com.br.vobis.model.Donation
 import com.br.vobis.services.CategoryService
-import com.br.vobis.services.DoacaoService
+import com.br.vobis.services.DonationService
 import com.br.vobis.utils.ImageUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -40,7 +38,7 @@ import java.text.DateFormat
 import java.util.*
 
 
-class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     val LOCATION_CODE = 1
 
 
@@ -148,7 +146,7 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
             if (arrayOf(name, phone, location, type, validity, description).contains("")) {
                 Toast.makeText(activity, "Preencha os Campos!", Toast.LENGTH_LONG).show()
             } else {
-                val newItem = Doavel(name, description, validity, phone, type, location)
+                val newItem = Donation(name, description, validity, phone, type, location)
 
                 onSubmit(newItem)
             }
@@ -182,13 +180,13 @@ class DoarFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSe
         return imageRef.putFile(imageUri)
     }
 
-    private fun onSubmit(item: Doavel) {
+    private fun onSubmit(item: Donation) {
         uploadImage().addOnSuccessListener {
             it.metadata?.reference?.downloadUrl?.let { urlDoc ->
                 {
                     item.addAttach(urlDoc.toString())
 
-                    DoacaoService().add(item).addOnSuccessListener { document ->
+                    DonationService().add(item).addOnSuccessListener { document ->
                         item.id = document.id
                         Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
                     }

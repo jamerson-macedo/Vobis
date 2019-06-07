@@ -10,12 +10,12 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import com.br.vobis.DoavelDetails
 import com.br.vobis.R
-import com.br.vobis.model.Doavel
+import com.br.vobis.model.Donation
 import com.br.vobis.utils.DateUtils.Companion.formatDate
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_item_doacao.view.*
 
-class DoacaoAdapter(private var reports: MutableList<Doavel>) : androidx.recyclerview.widget.RecyclerView.Adapter<DoacaoAdapter.CustomViewHolder>() {
+class DonationAdapter(private var reports: MutableList<Donation>) : androidx.recyclerview.widget.RecyclerView.Adapter<DonationAdapter.CustomViewHolder>() {
     lateinit var context: Context
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
@@ -39,7 +39,7 @@ class DoacaoAdapter(private var reports: MutableList<Doavel>) : androidx.recycle
         }
     }
 
-    private fun goToDetails(item: Doavel) {
+    private fun goToDetails(item: Donation) {
         val intentDetails = Intent(context, DoavelDetails::class.java)
         intentDetails.putExtra("id", item.id)
         context.startActivity(intentDetails)
@@ -53,7 +53,7 @@ class DoacaoAdapter(private var reports: MutableList<Doavel>) : androidx.recycle
         private val date: TextView = itemView.date!!
         private val state: TextView = itemView.status!!
 
-        fun bind(item: Doavel) {
+        fun bind(item: Donation) {
             Glide
                     .with(itemView.context)
                     .load(item.fotos.first())
