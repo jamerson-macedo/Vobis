@@ -1,5 +1,6 @@
 package com.br.vobis.services
 
+import com.br.vobis.model.IEntity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
@@ -7,7 +8,7 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.QuerySnapshot
 
 
-open class EntityService<T : Any>(collection: String) {
+open class EntityService<T : IEntity>(collection: String) {
 
     private val firestore = FirebaseFirestore.getInstance()
     val collectionReference = firestore.collection(collection)
@@ -28,6 +29,7 @@ open class EntityService<T : Any>(collection: String) {
 
     fun add(data: T): Task<DocumentSnapshot> {
         val newDoc = this.collectionReference.document()
+        data.id = newDoc.id
         newDoc.set(data)
         return newDoc.get()
     }

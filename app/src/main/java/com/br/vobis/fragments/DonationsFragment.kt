@@ -29,6 +29,8 @@ import com.br.vobis.services.DonationService
 import com.br.vobis.utils.ImageUtils
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
@@ -149,6 +151,8 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
                 val newItem = Donation(name, description, validity, phone, type, location)
 
                 onSubmit(newItem)
+                Log.i("item", newItem.descricao)
+                Toast.makeText(activity, "Objeto doado", Toast.LENGTH_LONG).show()
             }
         }
 
@@ -182,13 +186,13 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
 
     private fun onSubmit(item: Donation) {
         uploadImage().addOnSuccessListener {
-            it.metadata?.reference?.downloadUrl?.let { urlDoc ->
+            it.metadata?.reference?.downloadUrl.let { urlDoc ->
                 {
                     item.addAttach(urlDoc.toString())
 
                     DonationService().add(item).addOnSuccessListener { document ->
                         item.id = document.id
-                        Toast.makeText(activity, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
+                        Toast.makeText(activity!!, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
                     }
                 }
             }
