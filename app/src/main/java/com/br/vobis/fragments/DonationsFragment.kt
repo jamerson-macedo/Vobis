@@ -1,7 +1,6 @@
 package com.br.vobis.fragments
 
 import android.Manifest.permission
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address
@@ -15,13 +14,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.DatePicker
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
+import com.br.vobis.CategoryActivity
 import com.br.vobis.R
-import com.br.vobis.helper.DatePickerFragment
 import com.br.vobis.model.Category
 import com.br.vobis.model.Donation
 import com.br.vobis.services.CategoryService
@@ -36,11 +34,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_doar.*
-import java.text.DateFormat
 import java.util.*
 
 
-class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnDateSetListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     val LOCATION_CODE = 1
 
 
@@ -125,9 +122,14 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity!!)
 
 
-        checkBox.setOnClickListener {
-            edt_validity.isEnabled = !checkBox.isChecked
+        btn_category.setOnClickListener {
+            intentcategory()
+
+
         }
+
+
+
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -142,25 +144,21 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
             val name = edt_name.text.toString().trim()
             val location = edt_location.text.toString().trim()
             val type = spinner_type?.selectedItem.toString().trim()
-            val validity = edt_validity.text.toString().trim()
+
             val description = edt_description.text.toString().trim()
 
-            if (arrayOf(name, phone, location, type, validity, description).contains("")) {
+            if (arrayOf(name, phone, location, type, description).contains("")) {
                 Toast.makeText(activity, "Preencha os Campos!", Toast.LENGTH_LONG).show()
             } else {
-                val newItem = Donation(name, description, validity, phone, type, location)
+                val newItem = Donation(name, description, phone, type, location)
 
                 onSubmit(newItem)
-                Log.i("item", newItem.descricao)
+
                 Toast.makeText(activity, "Objeto doado", Toast.LENGTH_LONG).show()
             }
         }
 
-        edt_validity.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                this.showCalendar()
-            }
-        }
+
     }
 
     private fun fetchCategories() {
@@ -202,21 +200,6 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
 
     }
 
-    override fun onDateSet(view: DatePicker, year: Int, month: Int, dayOfMonth: Int) {
-        val cInstance = Calendar.getInstance()
-        cInstance.set(Calendar.YEAR, year)
-        cInstance.set(Calendar.MONTH, month)
-        cInstance.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-
-        val dateStr = DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(cInstance.time)
-        edt_validity.setText(dateStr)
-    }
-
-    private fun showCalendar() {
-        val datePicker = DatePickerFragment()
-        datePicker.setTargetFragment(this, 0)
-        datePicker.show(fragmentManager!!, "date picker")
-    }
 
     override fun onStart() {
         super.onStart()
@@ -236,21 +219,16 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
         try {
             val addresses: List<Address> = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1)
             if (addresses != null && addresses.size > 0) {
-                val returnedAddress = addresses[0]
-                val strReturnedAddress = StringBuilder("")
-                for (i in returnedAddress.maxAddressLineIndex.rangeTo(addresses.size)) {
-                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n")
-                    strReturnedAddress.append(returnedAddress.locale).append("\n")
-                    strReturnedAddress.append(returnedAddress.postalCode).append("\n")
-                    // nome da rua
-                    strReturnedAddress.append(returnedAddress.thoroughfare)
-                    strReturnedAddress.append(returnedAddress.subThoroughfare)
+                val address = addresses.get(0).getAddressLine(0)
 
-                }
-                strAdd = strReturnedAddress.toString()
-                Log.w("My", strReturnedAddress.toString())
-            } else {
-                Log.w("My", "No Address returned!")
+                val strReturnedAddress = StringBuilder("")
+                val cityName = addresses.get(0).locality
+                val stateName = addresses.get(0).adminArea
+                val countryName = addresses.get(0).countryName
+
+                strAdd = address
+                Log.w("My", strAdd)
+
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -259,7 +237,12 @@ class DonationsFragment : androidx.fragment.app.Fragment(), DatePickerDialog.OnD
         return strAdd
     }
 
+    private fun intentcategory() {
+        val intent = Intent(activity, CategoryActivity::class.java)
+        activity?.startActivity(intent)
 
+
+    }
 
 }
 

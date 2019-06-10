@@ -7,7 +7,7 @@ class Donation : IEntity {
     override var id: String? = null
     var nome: String = ""
     var descricao: String = ""
-    var validade: String = ""
+
     var telefone: String = ""
     var tipo: String = ""
     var status: STATUS = STATUS.PENDENTE
@@ -17,10 +17,10 @@ class Donation : IEntity {
 
     constructor()
 
-    constructor(nome: String, descricao: String, validade: String, telefone: String, tipo: String, localizacao: String) : this() {
+    constructor(nome: String, descricao: String, telefone: String, tipo: String, localizacao: String) : this() {
         this.nome = nome
         this.descricao = descricao
-        this.validade = validade
+
         this.telefone = telefone
         this.tipo = tipo
         this.localizacao = localizacao

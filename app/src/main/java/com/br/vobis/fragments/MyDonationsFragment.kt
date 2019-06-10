@@ -43,11 +43,12 @@ class MyDonationsFragment : Fragment() {
             recyclerView.adapter = DonationAdapter(items)
         }
     }
-
     private fun setupRecycleView() {
         // Set Recycle Layout
         recyclerView.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(activity)
         recyclerView.setHasFixedSize(true)
         recyclerView.setItemViewCacheSize(20)
     }
+
+
 }
