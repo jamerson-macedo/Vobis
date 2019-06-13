@@ -5,33 +5,42 @@ import com.google.firebase.Timestamp
 class Donation : IEntity {
 
     override var id: String? = null
-    var nome: String = ""
-    var descricao: String = ""
-
-    var telefone: String = ""
-    var tipo: String = ""
-    var status: STATUS = STATUS.PENDENTE
-    var localizacao: String = ""
-    var dataPublicada: Timestamp = Timestamp.now()
-    val fotos: MutableList<String> = mutableListOf()
+    var author: String? = null
+    var description: String? = null
+    var validity: Timestamp? = null
+    var category: String? = null
+    var subCategory: String? = null
+    var phone: String? = null
+    var type: String? = null
+    var photo: String? = null
+    var status: STATUS = STATUS.WAITING
+    var location: LocationVobis? = null
+    val attach: MutableList<String> = mutableListOf()
+    var updatedOn: Timestamp? = Timestamp.now()
 
     constructor()
 
-    constructor(nome: String, descricao: String, telefone: String, tipo: String, localizacao: String) : this() {
-        this.nome = nome
-        this.descricao = descricao
-
-        this.telefone = telefone
-        this.tipo = tipo
-        this.localizacao = localizacao
+    constructor(author: String, description: String, validity: Timestamp, phone: String, type: String, location: LocationVobis) : this() {
+        this.author = author
+        this.description = description
+        this.validity = validity
+        this.phone = phone
+        this.type = type
+        this.location = location
     }
 
     fun addAttach(storeLink: String) {
-        this.fotos.add(storeLink)
+        this.attach.add(storeLink)
     }
 
     enum class STATUS {
-        PENDENTE,
-        RESOLVIDO
+        WAITING,
+        PENDENT,
+        RESOLVED
     }
 }
+
+/*fun addAttachphoto(storeLink: String) {
+   //this.photo.add(storeLink)
+}*/
+

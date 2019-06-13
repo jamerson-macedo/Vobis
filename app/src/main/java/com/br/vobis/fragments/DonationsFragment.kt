@@ -33,6 +33,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
+import com.irozon.sneaker.Sneaker
 import kotlinx.android.synthetic.main.fragment_doar.*
 import java.util.*
 
@@ -136,12 +137,15 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         }
 
         btn_submit.setOnClickListener {
+            btn_submit.visibility = View.INVISIBLE
+            progressBar.visibility = View.VISIBLE
 
 
             val user = mAuth.currentUser
 
             val phone = user?.phoneNumber!!
             val name = edt_name.text.toString().trim()
+
             val location = edt_location.text.toString().trim()
             val type = spinner_type?.selectedItem.toString().trim()
 
@@ -149,12 +153,16 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
 
             if (arrayOf(name, phone, location, type, description).contains("")) {
                 Toast.makeText(activity, "Preencha os Campos!", Toast.LENGTH_LONG).show()
+                btn_submit.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
+
             } else {
+
                 val newItem = Donation(name, description, phone, type, location)
 
                 onSubmit(newItem)
 
-                Toast.makeText(activity, "Objeto doado", Toast.LENGTH_LONG).show()
+
             }
         }
 
@@ -190,12 +198,17 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
 
                     DonationService().add(item).addOnSuccessListener { document ->
                         item.id = document.id
-                        Toast.makeText(activity!!, "Cadastro realizado com sucesso", Toast.LENGTH_LONG).show()
+                        btn_submit.visibility = View.VISIBLE
+                        progressBar.visibility = View.INVISIBLE
+                        showsneakerpositive()
+
                     }
                 }
             }
         }.addOnFailureListener {
-            Toast.makeText(activity, "Falha ao enviar imagem", Toast.LENGTH_SHORT).show()
+            showsneakerfailled()
+            btn_submit.visibility = View.VISIBLE
+            progressBar.visibility = View.INVISIBLE
         }
 
     }
@@ -242,6 +255,18 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         activity?.startActivity(intent)
 
 
+    }
+
+    private fun showsneakerpositive() {
+        Sneaker.with(this).setTitle("Obrigado por Ajudar").setMessage("Sua doação foi realizada com sucesso!")
+                .setDuration(4000)
+                .autoHide(true).setCornerRadius(10, 10).sneakSuccess()
+    }
+
+    private fun showsneakerfailled() {
+        Sneaker.with(this).setTitle("Falha ao doar").setMessage("Verifique sua internet")
+                .setDuration(4000)
+                .autoHide(true).setCornerRadius(10, 10).sneakWarning()
     }
 
 }

@@ -2,10 +2,13 @@ package com.br.vobis.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.google.firebase.Timestamp
 
 class Category() : IEntity, Parcelable {
     override var id: String? = null
     lateinit var name: String
+    var createdOn = Timestamp.now()
+    var subCategories = mutableListOf<Category>()
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()

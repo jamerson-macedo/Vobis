@@ -56,12 +56,12 @@ class DonationAdapter(private var reports: MutableList<Donation>) : androidx.rec
         fun bind(item: Donation) {
             Glide
                     .with(itemView.context)
-                    .load(item.fotos.first())
+                    .load(item.photo?.first())
                     .centerCrop()
                     .into(thumbnail)
 
-            title.text = item.nome
-            date.text = formatDate(item.dataPublicada)
+            title.text = item.author
+            date.text = item.updatedOn?.let { formatDate(it) }
             state.text = item.status.toString()
         }
     }
