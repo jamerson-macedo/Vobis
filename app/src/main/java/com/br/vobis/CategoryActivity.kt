@@ -1,11 +1,11 @@
 package com.br.vobis
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.br.vobis.adapters.CategoryAdapter
 import com.br.vobis.model.Category
-import com.br.vobis.model.Expandable
+import com.br.vobis.model.ExpandableCategory
 import com.br.vobis.services.CategoryService
 import kotlinx.android.synthetic.main.activity_category.*
 
@@ -17,28 +17,24 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
         setupRecycleView()
 
-        val pai = mutableListOf<Expandable>()
-        val categories = mutableListOf<Category>()
-        CategoryService().getAll().addOnSuccessListener {
+        CategoryService().getAll().addOnSuccessListener { querySnapshot ->
+            val categories = mutableListOf<ExpandableCategory>()
 
-            it.documents.forEach { document ->
-                val category = document.toObject(Category::class.java)!!
-                categories.add(category)
-
+            querySnapshot.documents.forEach { document ->
+                document.toObject(Category::class.java)?.let { category ->
+                    if (category.subCategories.size > 0) {
+                        categories.add(ExpandableCategory(category.name, category.subCategories))
+                    }
+                }
             }
-            recyclerviewCategoty.adapter = CategoryAdapter(pai)
+
+            recyclerviewCategoty.adapter = CategoryAdapter(categories)
         }
-        val categoria = Expandable("ola mundo", categories)
-        Log.i("olamundo", categories.toString())
-
-        pai.add(categoria)
-
-
     }
 
     private fun setupRecycleView() {
         // Set Recycle Layout
-        recyclerviewCategoty.layoutManager = androidx.recyclerview.widget.LinearLayoutManager(applicationContext)
+        recyclerviewCategoty.layoutManager = LinearLayoutManager(applicationContext)
         recyclerviewCategoty.setHasFixedSize(true)
         recyclerviewCategoty.setItemViewCacheSize(20)
     }
