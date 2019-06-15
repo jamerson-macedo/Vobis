@@ -5,27 +5,27 @@ import com.google.firebase.Timestamp
 class Donation : IEntity {
 
     override var id: String? = null
-    var author: String? = null
+    var name: String? = null
     var description: String? = null
     var validity: Timestamp? = null
     var category: String? = null
     var subCategory: String? = null
-    var phone: String? = null
-    var type: String? = null
-    var photo: String? = null
+    var phoneAuthor: String? = null
     var status: STATUS = STATUS.WAITING
     var location: LocationVobis? = null
     val attach: MutableList<String> = mutableListOf()
-    var updatedOn: Timestamp? = Timestamp.now()
+    var createdOn: Timestamp? = Timestamp.now()
+    var updatedOn: Timestamp? = null
 
     constructor()
 
-    constructor(author: String, description: String, validity: Timestamp, phone: String, type: String, location: LocationVobis) : this() {
-        this.author = author
+    constructor(name: String, description: String, validity: Timestamp?, phone: String, category: String, subCategory: String, location: LocationVobis) : this() {
+        this.name = name
         this.description = description
         this.validity = validity
-        this.phone = phone
-        this.type = type
+        this.phoneAuthor = phone
+        this.category = category
+        this.subCategory = subCategory
         this.location = location
     }
 
@@ -39,8 +39,3 @@ class Donation : IEntity {
         RESOLVED
     }
 }
-
-/*fun addAttachphoto(storeLink: String) {
-   //this.photo.add(storeLink)
-}*/
-

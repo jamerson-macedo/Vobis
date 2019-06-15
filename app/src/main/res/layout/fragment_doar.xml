@@ -54,43 +54,17 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <Spinner
-            android:id="@+id/spinner_type"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            android:soundEffectsEnabled="true"
-            android:spinnerMode="dropdown"
-            android:textColor="#000000"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_edt_validity"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-
-            app:layout_constraintTop_toBottomOf="@+id/spinner_type" />
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_description"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_category">
+            app:layout_constraintTop_toBottomOf="@+id/button">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_description"
@@ -116,7 +90,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_add" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_add"
+            app:layout_constraintVertical_bias="1.0" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add"
@@ -140,16 +115,16 @@
             android:layout_height="wrap_content"
 
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:background="@drawable/buttons"
 
+            android:background="@drawable/buttons"
             android:drawableRight="@drawable/ic_chevron_right_black_24dp"
             android:text="Categorias"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_type" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
         <ImageView
 
             android:id="@+id/imageView"
@@ -159,17 +134,6 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@+id/btn_add"
             app:layout_constraintTop_toBottomOf="@+id/layout_edt_description" />
-
-        <TextView
-            android:id="@+id/txtCategory"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Categoria"
-            android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -183,6 +147,18 @@
             app:layout_constraintEnd_toEndOf="@+id/btn_submit"
             app:layout_constraintStart_toStartOf="@+id/btn_submit"
             app:layout_constraintTop_toTopOf="@+id/btn_submit" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:text="SubCategoria"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_category" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
