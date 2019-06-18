@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.ActivityCompat.requestPermissions
 import com.br.vobis.CategoryActivity
+import com.br.vobis.MapsActivity
 import com.br.vobis.R
 import com.br.vobis.model.Donation
 import com.br.vobis.model.InfoLocation
@@ -54,6 +55,7 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         return inflater.inflate(R.layout.fragment_doar, container, false)
     }
 
@@ -63,6 +65,12 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         btn_category.setOnClickListener {
             intentCategory()
         }
+        openlocationmap.setOnClickListener {
+
+            val intent = Intent(activity!!, MapsActivity::class.java)
+            startActivity(intent)
+
+        }
 
         btn_add.setOnClickListener {
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
@@ -71,6 +79,17 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         btn_submit.setOnClickListener {
             btn_submit.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
+            if (arguments != null) {
+                val latitude = arguments!!.getDouble("latitude")
+
+                val longitude = arguments!!.getDouble("longitude")
+                val endereco = arguments!!.getDouble("addres")
+                // tem que passar de um em um
+                //LocationVobis(latitude, longitude, endereco)
+
+
+            }
+
 
             val phoneAuthor = mAuth.currentUser?.phoneNumber!!
             val name = edt_name.text.toString().trim()
@@ -220,5 +239,6 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
     private fun showSneaker(message: String) {
         Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).show()
     }
+
 }
 
