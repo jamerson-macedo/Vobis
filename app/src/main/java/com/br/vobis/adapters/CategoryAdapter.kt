@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import com.br.vobis.R
 import com.br.vobis.model.Category
 import com.br.vobis.model.ExpandableCategory
@@ -25,33 +26,39 @@ class CategoryAdapter(categories: List<ExpandableCategory>) : ExpandableRecycler
     }
 
     override fun onCreateChildViewHolder(parent: ViewGroup, viewType: Int): SubCategoryView {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.list_item_subcategory, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.list_item_subcategory, parent, false)
         return SubCategoryView(view)
     }
 
     override fun onBindGroupViewHolder(holder: CategoryViewHolder, flatPosition: Int, group: ExpandableGroup<*>) {
-        val item = group.items[flatPosition]
+        val categoryName = group.title
 
-        holder.bind(item as Category)
+        holder.bind(categoryName)
     }
 
     override fun onBindChildViewHolder(holder: SubCategoryView, flatPosition: Int, group: ExpandableGroup<*>, childIndex: Int) {
-        val subCategories = group.items[childIndex]
-        holder.bind(subCategories as Category)
+        val subcategory = group.items[childIndex] as Category
+
+        holder.bind(subcategory)
+        holder.itemView.setOnClickListener {
+            val nameCategory = group.title
+            val nameSubcategory = subcategory.name
+            Toast.makeText(context, "Agora me add na doação :) ($nameCategory - $nameSubcategory)", Toast.LENGTH_SHORT).show()
+        }
     }
 }
 
 class CategoryViewHolder(itemView: View) : GroupViewHolder(itemView) {
-    private val title: TextView = itemView.findViewById(R.id.name)
+    private val title: TextView = itemView.findViewById(R.id.txt_category)
 
-    fun bind(item: Category) {
-        title.text = item.name
+    fun bind(category: String) {
+        title.text = category
     }
 }
 
 
 class SubCategoryView(itemView: View) : ChildViewHolder(itemView) {
-    private val title: TextView = itemView.findViewById(R.id.name)
+    private val title: TextView = itemView.findViewById(R.id.txt_subcategory)
 
     fun bind(item: Category) {
         title.text = item.name
