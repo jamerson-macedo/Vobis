@@ -9,6 +9,7 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -67,30 +68,34 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         }
         openlocationmap.setOnClickListener {
 
+
             val intent = Intent(activity!!, MapsActivity::class.java)
             startActivity(intent)
 
         }
 
         btn_add.setOnClickListener {
+            if (arguments != null) {
+                val latitude = arguments!!.getDouble("latitude")
+
+                val longitude = arguments!!.getDouble("longitude")
+                val city = arguments!!.getString("city")
+                val state = arguments!!.getString("state")
+                val country = arguments!!.getString("country")
+                val cep = arguments!!.getString("cep")
+                val address = arguments!!.getString("address")
+                val infoLocation = InfoLocation(address, cep, city, state, country)
+                Log.i("dadosdaloca", address)
+                val locationVobis = LocationVobis(latitude, longitude, infoLocation)
+                donation.location = locationVobis
+                edt_location.setText(locationVobis.infors?.adress)
+            }
             ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
         btn_submit.setOnClickListener {
             btn_submit.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
-            if (arguments != null) {
-                val latitude = arguments!!.getDouble("latitude")
-
-                val longitude = arguments!!.getDouble("longitude")
-                val endereco = arguments!!.getDouble("addres")
-                // tem que passar de um em um
-                //LocationVobis(latitude, longitude, endereco)
-
-
-            }
-
-
             val phoneAuthor = mAuth.currentUser?.phoneNumber!!
             val name = edt_name.text.toString().trim()
             val description = edt_description.text.toString().trim()

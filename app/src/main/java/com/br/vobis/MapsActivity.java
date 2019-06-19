@@ -87,14 +87,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                                         double putlatitude = atual.latitude;
                                         double putllogintude = atual.longitude;
-                                        String putaddres = address.getAddressLine(0);
+                                        String ADDRESS = address.getAddressLine(0);
+                                        String CITYNAME = address.getLocality();
+                                        String STATENAME = address.getAdminArea();
+                                        String COUNTRYNAME = address.getCountryName();
+                                        String CEP = address.getPostalCode();
+
                                         // para passar de activity para fragment
                                         DonationsFragment fragment = new DonationsFragment();
                                         Bundle bundle = new Bundle();
+
                                         bundle.putDouble("latitude", putlatitude);
+                                        bundle.putString("address", ADDRESS);
                                         bundle.putDouble("longitude", putllogintude);
-                                        bundle.putDouble("longitude", putllogintude);
-                                        bundle.putString("addres", putaddres);
+                                        bundle.putString("city", CITYNAME);
+                                        bundle.putString("state", STATENAME);
+                                        bundle.putString("country", COUNTRYNAME);
+                                        bundle.putString("cep", CEP);
 
                                         fragment.setArguments(bundle);
                                         finish();
