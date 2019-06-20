@@ -1,40 +1,14 @@
-package com.br.vobis.model
+package com.jedev.vobis_admin.models
 
-import android.os.Parcel
-import android.os.Parcelable
+import com.br.vobis.model.IEntity
 import com.google.firebase.Timestamp
 
-class Category() : IEntity, Parcelable {
+data class Category(var name: String?, var createdOn: Timestamp, var subCategories: MutableList<SubCategory>): IEntity {
     override var id: String? = null
-    lateinit var name: String
-    var createdOn = Timestamp.now()
-    var subCategories = mutableListOf<Category>()
 
-    constructor(parcel: Parcel) : this() {
-        id = parcel.readString()
-        name = parcel.readString()
-    }
+    constructor() : this(null, Timestamp.now(), mutableListOf())
 
-    constructor(name: String) : this() {
-        this.name = name
-    }
-
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(id)
-        parcel.writeString(name)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Category> {
-        override fun createFromParcel(parcel: Parcel): Category {
-            return Category(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Category?> {
-            return arrayOfNulls(size)
-        }
+    fun addSubCategory(name: String) {
+        this.subCategories.add(SubCategory(name))
     }
 }

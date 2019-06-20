@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.br.vobis.adapters.CategoryAdapter
-import com.br.vobis.model.Category
 import com.br.vobis.model.ExpandableCategory
 import com.br.vobis.services.CategoryService
+import com.jedev.vobis_admin.models.Category
 import kotlinx.android.synthetic.main.activity_category.*
 
 
@@ -21,7 +21,7 @@ class CategoryActivity : AppCompatActivity() {
             val categories = mutableListOf<ExpandableCategory>()
 
             querySnapshot.documents.forEach { document ->
-                document.toObject(Category::class.java)?.let { category ->
+               document.toObject(Category::class.java)?.let { category ->
                     if (category.subCategories.size > 0) {
                         categories.add(ExpandableCategory(category.name, category.subCategories))
                     }
