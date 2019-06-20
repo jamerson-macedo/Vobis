@@ -16,6 +16,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_name"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -29,17 +30,18 @@
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Nome" />
+
+                android:hint="Nome da Doação" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_location"
-            android:layout_width="0dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-
-            app:layout_constraintEnd_toStartOf="@+id/guideline"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layout_edt_name">
 
@@ -60,6 +62,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="24dp"
             android:layout_marginEnd="16dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,13 +71,13 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:drawableEnd="@drawable/ic_message_black_24dp"
                 android:drawableRight="@drawable/ic_message_black_24dp"
                 android:hint="Descrição" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -85,6 +88,7 @@
             android:background="@drawable/buttons"
             android:text="Doar"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
+            app:cornerRadius="17dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
@@ -108,22 +112,24 @@
             app:layout_constraintTop_toBottomOf="@+id/layout_edt_description"
             app:rippleColor="@color/colorPrimaryDark" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:layout_marginStart="16dp"
+
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-
             android:background="@drawable/buttons"
             android:drawableRight="@drawable/ic_chevron_right_black_24dp"
             android:text="Categorias"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.575"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
 
@@ -148,7 +154,7 @@
             app:layout_constraintStart_toStartOf="@+id/btn_submit"
             app:layout_constraintTop_toTopOf="@+id/btn_submit" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -156,28 +162,28 @@
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="SubCategoria"
+            style="@style/Widget.MaterialComponents.Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_category" />
 
-        <ImageView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/openlocationmap"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:focusable="false"
+            android:text="Pegar Localização"
+            app:icon="@drawable/ic_map_black_24dp"
+            app:iconGravity="textEnd"
             android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/layout_edt_location"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/layout_edt_location"
-            app:layout_constraintTop_toTopOf="@+id/layout_edt_location"
-            app:srcCompat="@drawable/ic_location_on_black_24dp" />
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.9" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

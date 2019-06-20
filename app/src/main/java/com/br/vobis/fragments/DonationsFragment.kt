@@ -75,6 +75,7 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         }
 
         btn_add.setOnClickListener {
+
             if (arguments != null) {
                 val latitude = arguments!!.getDouble("latitude")
 
