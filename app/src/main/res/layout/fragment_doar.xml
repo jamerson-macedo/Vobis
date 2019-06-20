@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -35,15 +35,38 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/layout_edt_description"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_name">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_description"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:drawableEnd="@drawable/ic_message_black_24dp"
+                android:drawableRight="@drawable/ic_message_black_24dp"
+                android:hint="Descrição" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_location"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_name">
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_description">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/edt_location"
@@ -55,46 +78,52 @@
         </com.google.android.material.textfield.TextInputLayout>
 
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/layout_edt_description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="16dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edt_description"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:drawableEnd="@drawable/ic_message_black_24dp"
-                android:drawableRight="@drawable/ic_message_black_24dp"
-                android:hint="Descrição" />
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_submit"
-            android:layout_width="match_parent"
+            android:id="@+id/openlocationmap"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/buttons"
-            android:text="Doar"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            app:cornerRadius="17dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:focusable="false"
+            android:text="Pegar Localização"
+            app:icon="@drawable/ic_map_black_24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_add"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_category"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/buttons"
+            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
+            android:text="Categoria"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.575"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/openlocationmap" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/button"
+            style="@style/Widget.MaterialComponents.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:text="SubCategoria"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_category" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_add"
@@ -104,32 +133,13 @@
             android:layout_marginTop="16dp"
             android:background="@color/colorPrimary"
             android:src="@drawable/ic_add_a_photo_black_24dp"
-            app:backgroundTint="@color/colorPrimary"
 
+            app:backgroundTint="@color/colorPrimary"
             app:elevation="4dp"
             app:fabCustomSize="70dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_description"
+            app:layout_constraintTop_toBottomOf="@+id/button"
             app:rippleColor="@color/colorPrimaryDark" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_category"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:layout_marginStart="16dp"
-
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="@drawable/buttons"
-            android:drawableRight="@drawable/ic_chevron_right_black_24dp"
-            android:text="Categorias"
-            android:textColor="@color/common_google_signin_btn_text_dark_default"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.575"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
 
@@ -139,7 +149,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toEndOf="@+id/btn_add"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_description" />
+            app:layout_constraintTop_toBottomOf="@+id/button" />
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -155,34 +165,23 @@
             app:layout_constraintTop_toTopOf="@+id/btn_submit" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/button"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:text="SubCategoria"
-            style="@style/Widget.MaterialComponents.Button"
+            android:layout_marginBottom="16dp"
+            android:background="@color/colorPrimary"
+            android:text="Doar"
+            android:textColor="@color/common_google_signin_btn_text_dark_default"
+            app:cornerRadius="17dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_category" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/openlocationmap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:focusable="false"
-            android:text="Pegar Localização"
-            app:icon="@drawable/ic_map_black_24dp"
-            app:iconGravity="textEnd"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_add"
+            app:layout_constraintVertical_bias="1.0" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
