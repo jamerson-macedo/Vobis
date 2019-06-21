@@ -9,10 +9,10 @@ import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -25,6 +25,7 @@ import com.br.vobis.model.InfoLocation
 import com.br.vobis.model.LocationVobis
 import com.br.vobis.services.DonationService
 import com.br.vobis.utils.ImageUtils
+import com.br.vobis.utils.ImageUtils.generateImage
 import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -33,7 +34,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.UploadTask
 import kotlinx.android.synthetic.main.fragment_doar.*
 import java.util.*
 
@@ -41,7 +41,7 @@ import java.util.*
 class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private var donation = Donation()
-    private lateinit var imageUri: Uri
+    private var imageMap = hashMapOf<ImageView, Uri>()
 
     private val googleApiClient: GoogleApiClient by lazy { buildApiLocation() }
     private val fusedLocationProviderClient: FusedLocationProviderClient by lazy { LocationServices.getFusedLocationProviderClient(activity!!) }
@@ -52,7 +52,8 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
-        private const val LOCATION_CODE = 1
+        private const val CATEGORY_CODE = 22
+        private const val LOCATION_CODE = 31
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,50 +64,40 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        btn_category.setOnClickListener {
-            intentCategory()
+        edt_category.setOnClickListener {
+            startActivityForResult(Intent(activity, CategoryActivity::class.java), CATEGORY_CODE)
         }
+
+        edt_subcategory.setOnClickListener {
+            startActivityForResult(Intent(activity, CategoryActivity::class.java), CATEGORY_CODE)
+        }
+
         openlocationmap.setOnClickListener {
-
-
-            val intent = Intent(activity!!, MapsActivity::class.java)
-            startActivity(intent)
-
+            startActivityForResult(Intent(activity!!, MapsActivity::class.java), LOCATION_CODE)
         }
 
-        btn_add.setOnClickListener {
-
-            if (arguments != null) {
-                val latitude = arguments!!.getDouble("latitude")
-
-                val longitude = arguments!!.getDouble("longitude")
-                val city = arguments!!.getString("city")
-                val state = arguments!!.getString("state")
-                val country = arguments!!.getString("country")
-                val cep = arguments!!.getString("cep")
-                val address = arguments!!.getString("address")
-                val infoLocation = InfoLocation(address, cep, city, state, country)
-                Log.i("dadosdaloca", address)
-                val locationVobis = LocationVobis(latitude, longitude, infoLocation)
-                donation.location = locationVobis
-                edt_location.setText(locationVobis.infors?.adress)
-            }
-            ImageUtils.selectByGallery(activity!!, PICK_IMAGE_REQUEST)
+        btn_add_photos.setOnClickListener {
+            ImageUtils.selectImageByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
         btn_submit.setOnClickListener {
             btn_submit.visibility = View.INVISIBLE
             progressBar.visibility = View.VISIBLE
+
             val phoneAuthor = mAuth.currentUser?.phoneNumber!!
             val name = edt_name.text.toString().trim()
             val description = edt_description.text.toString().trim()
+
+            donation.name = name
+            donation.description = description
+            donation.phoneAuthor = phoneAuthor
 
             if (isValidDonation()) {
                 donation.name = name
                 donation.phoneAuthor = phoneAuthor
                 donation.description = description
 
-                onSubmit(donation)
+                submitData()
             }
         }
     }
@@ -115,7 +106,7 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         val errorInput = when {
             donation.name.isNullOrEmpty() -> "Preencha o campo do nome do item"
             donation.description.isNullOrEmpty() -> "Preencha o campo da Descrição"
-            donation.validity == null -> "Preencha o campo da Validade"
+//            donation.validity == null -> "Preencha o campo da Validade"
             else -> null
         }
 
@@ -131,12 +122,29 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == AppCompatActivity.RESULT_OK && data != null) {
-            imageUri = data.data!!
 
-            val bitmap = MediaStore.Images.Media.getBitmap(activity?.contentResolver, imageUri)
-            ImageUtils.compressImage(bitmap)
-            imageView.setImageBitmap(bitmap)
+        if (resultCode == AppCompatActivity.RESULT_OK && data != null) {
+            when (requestCode) {
+                PICK_IMAGE_REQUEST -> {
+                    resolveResultImage(data.data!!)
+                }
+                CATEGORY_CODE -> {
+                    data.extras?.let {
+                        val category = it.getString("category")!!
+                        val subcategory = it.getString("subcategory")!!
+
+                        resolveResultCategory(category, subcategory)
+                    }
+                }
+                LOCATION_CODE -> {
+                    data.extras?.let {
+                        val lat = it.getDouble("lat")
+                        val long = it.getDouble("long")
+
+                        resolveResultLocation(lat, long)
+                    }
+                }
+            }
         }
     }
 
@@ -176,9 +184,48 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         requestPermissions(activity!!, arrayOf(permission.ACCESS_FINE_LOCATION), LOCATION_CODE)
     }
 
-    override fun onConnectionSuspended(p0: Int) { return }
+    override fun onConnectionSuspended(p0: Int) {
+        return
+    }
 
-    override fun onConnectionFailed(p0: ConnectionResult) { return }
+    override fun onConnectionFailed(p0: ConnectionResult) {
+        return
+    }
+
+    private fun resolveResultImage(uri: Uri) {
+        if (imageMap.size != 3) {
+            val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
+
+            ImageUtils.compressImage(bitmap)
+
+            val newImageView = generateImage(context!!, bitmap, 70, 70, 4)
+
+            newImageView.setOnClickListener {
+                container_photos.removeView(newImageView)
+                imageMap.remove(newImageView)
+            }
+
+            container_photos.addView(newImageView)
+            imageMap[newImageView] = uri
+        } else {
+            showSnackbar("Você antigiu o máximo de imagens permitidas!")
+        }
+    }
+
+    private fun resolveResultCategory(category: String, subCategory: String) {
+        donation.category = category
+        donation.subCategory = subCategory
+
+        edt_category.setText(category)
+        edt_subcategory.setText(subCategory)
+    }
+
+    private fun resolveResultLocation(lat: Double, long: Double) {
+        donation.location = getLocationByLatLong(lat, long)
+        donation.location?.infors?.adress?.let {
+            edt_location.setText(it)
+        }
+    }
 
     private fun buildApiLocation(): GoogleApiClient {
         return GoogleApiClient.Builder(activity!!)
@@ -188,31 +235,36 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
                 .build()
     }
 
-    private fun uploadImage(): UploadTask {
+    private fun submitData() {
         val storageReference: StorageReference? = storage.reference
-        val imageRef = storageReference!!.child("doacoes/" + UUID.randomUUID().toString())
 
-        return imageRef.putFile(imageUri)
-    }
+        btn_submit.visibility = View.INVISIBLE
+        progressBar.visibility = View.VISIBLE
 
-    private fun onSubmit(item: Donation) {
-        uploadImage().addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                task.result?.uploadSessionUri?.let {
-                    // Add photo
-                    item.addAttach(it.toString())
+        imageMap.values.forEach {
+            val ref = storageReference!!.child("donations/" + UUID.randomUUID().toString())
 
-                    DonationService().add(item)
+            ref.putFile(it).addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    task.result?.uploadSessionUri.let { uri ->
+                        donation.addAttach(uri.toString())
+                    }
+                }
+
+                if (it == imageMap[imageMap.keys.last()]) {
+                    DonationService().add(donation)
+
                     btn_submit.visibility = View.VISIBLE
                     progressBar.visibility = View.INVISIBLE
 
-                    showSneaker("Obrigado, doação realizada com sucesso!")
+                    showSnackbar("Obrigado, doação realizada com sucesso!")
                 }
+            }.addOnFailureListener {
+                showSnackbar("Falha ao doar, Verifique sua internet")
+
+                btn_submit.visibility = View.VISIBLE
+                progressBar.visibility = View.INVISIBLE
             }
-        }.addOnFailureListener {
-            showSneaker("Falha ao doar, Verifique sua internet")
-            btn_submit.visibility = View.VISIBLE
-            progressBar.visibility = View.INVISIBLE
         }
     }
 
@@ -237,12 +289,7 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
         return null
     }
 
-    private fun intentCategory() {
-        val intent = Intent(activity, CategoryActivity::class.java)
-        activity?.startActivity(intent)
-    }
-
-    private fun showSneaker(message: String) {
+    private fun showSnackbar(message: String) {
         Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).show()
     }
 

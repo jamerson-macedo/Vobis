@@ -2,6 +2,7 @@ package com.br.vobis;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -84,38 +86,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                 button.setOnClickListener(new View.OnClickListener() {
                                     @Override
                                     public void onClick(View v) {
+                                        Double latitude = atual.latitude;
+                                        Double longitude = atual.longitude;
 
-                                        double putlatitude = atual.latitude;
-                                        double putllogintude = atual.longitude;
-                                        String ADDRESS = address.getAddressLine(0);
-                                        String CITYNAME = address.getLocality();
-                                        String STATENAME = address.getAdminArea();
-                                        String COUNTRYNAME = address.getCountryName();
-                                        String CEP = address.getPostalCode();
+                                        Intent intent = new Intent();
 
-                                        // para passar de activity para fragment
-                                        DonationsFragment fragment = new DonationsFragment();
-                                        Bundle bundle = new Bundle();
+                                        intent.putExtra("lat", latitude);
+                                        intent.putExtra("long", longitude);
 
-                                        bundle.putDouble("latitude", putlatitude);
-                                        bundle.putString("address", ADDRESS);
-                                        bundle.putDouble("longitude", putllogintude);
-                                        bundle.putString("city", CITYNAME);
-                                        bundle.putString("state", STATENAME);
-                                        bundle.putString("country", COUNTRYNAME);
-                                        bundle.putString("cep", CEP);
+                                        setResult(AppCompatActivity.RESULT_OK, intent);
 
-                                        fragment.setArguments(bundle);
                                         finish();
-                                        // para passar de activity para activity
-
-                                        /*Intent intent = new Intent(v.getContext(), DonationsFragment);
-                                        intent.putExtra("latitude", putlatitude);
-                                        intent.putExtra("longitude", putllogintude);
-                                        intent.putExtra("addres", putaddres);
-                                        startActivity(intent);
-                                        */
-
                                     }
                                 });
 

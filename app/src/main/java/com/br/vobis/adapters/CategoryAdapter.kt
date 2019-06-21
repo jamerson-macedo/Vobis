@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import com.br.vobis.R
 import com.br.vobis.model.ExpandableCategory
 import com.jedev.vobis_admin.models.SubCategory
@@ -18,10 +21,6 @@ import com.thoughtbot.expandablerecyclerview.viewholders.GroupViewHolder
 class CategoryAdapter(categories: List<ExpandableCategory>) : ExpandableRecyclerViewAdapter<CategoryViewHolder, SubCategoryView>(categories) {
 
     lateinit var context: Context
-
-    companion object {
-        const val CODE_RESULT_CATEGORY = 34534
-    }
 
     override fun onCreateGroupViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         context = parent.context
@@ -47,10 +46,14 @@ class CategoryAdapter(categories: List<ExpandableCategory>) : ExpandableRecycler
         holder.bind(subcategory)
         holder.itemView.setOnClickListener {
             val intent = Intent()
-            intent.putExtra("category", group.title)
-            intent.putExtra("category", subcategory.name)
 
-            (context as Activity).setResult(CODE_RESULT_CATEGORY, intent)
+            intent.putExtra("category", group.title)
+            intent.putExtra("subcategory", subcategory.name)
+
+            (context as Activity).let {
+                it.setResult(AppCompatActivity.RESULT_OK, intent)
+                it.finish()
+            }
         }
     }
 }
@@ -65,7 +68,7 @@ class CategoryViewHolder(itemView: View) : GroupViewHolder(itemView) {
 
 
 class SubCategoryView(itemView: View) : ChildViewHolder(itemView) {
-    private val title: TextView = itemView.findViewById(R.id.txt_subcategory)
+    val title: TextView = itemView.findViewById(R.id.txt_subcategory)
 
     fun bind(item: SubCategory) {
         title.text = item.name

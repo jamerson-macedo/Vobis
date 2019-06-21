@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.br.vobis.DoavelDetails
 import com.br.vobis.R
 import com.br.vobis.model.Donation
-import com.br.vobis.utils.DateUtils.Companion.formatDate
+import com.br.vobis.utils.DateUtils.formatDate
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.card_item_doacao.view.*
 
