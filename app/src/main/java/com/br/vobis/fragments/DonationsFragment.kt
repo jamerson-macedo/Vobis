@@ -57,7 +57,7 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
+        googleApiClient.connect()
         return inflater.inflate(R.layout.fragment_doar, container, false)
     }
 
@@ -146,12 +146,6 @@ class DonationsFragment : androidx.fragment.app.Fragment(), GoogleApiClient.Conn
                 }
             }
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-
-        googleApiClient.connect()
     }
 
     override fun onStop() {

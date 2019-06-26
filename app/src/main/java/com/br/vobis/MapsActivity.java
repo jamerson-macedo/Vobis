@@ -18,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentActivity;
 
-import com.br.vobis.fragments.DonationsFragment;
 import com.br.vobis.helper.Permissoes;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -65,7 +64,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onLocationChanged(Location location) {
                 LatLng atual = new LatLng(location.getLatitude(), location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atual, 19));
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(atual, 18));
 
 
                 mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -76,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             mMap.clear();
 
                             listaendereco = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                            if (listaendereco != null & listaendereco.size() > 0) {
+                            if (listaendereco != null && listaendereco.size() > 0) {
                                 // pegando o primeiro resultado
                                 address = listaendereco.get(0);
                                 address.getAddressLine(0);
