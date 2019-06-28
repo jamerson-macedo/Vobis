@@ -38,6 +38,7 @@ class MainActivity : AppCompatActivity() {
                         .create())
         viewPager!!.adapter = adapter
         smartTabLayout!!.setViewPager(viewPager)
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

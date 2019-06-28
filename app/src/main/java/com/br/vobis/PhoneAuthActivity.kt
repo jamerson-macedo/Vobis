@@ -40,6 +40,7 @@ class PhoneAuthActivity : AppCompatActivity() {
 
         if (mAuth.currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 }
