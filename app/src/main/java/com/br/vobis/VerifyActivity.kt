@@ -34,11 +34,8 @@ class VerifyActivity : AppCompatActivity() {
         verify()
 
         btn_verificar.setOnClickListener {
-
             authenticate()
-
         }
-
     }
 
     private fun authenticate() {

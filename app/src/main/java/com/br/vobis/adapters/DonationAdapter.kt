@@ -35,16 +35,16 @@ class DonationAdapter(private var items: MutableList<Donation>) : RecyclerView.A
         val item = items[position]
 
         holder.bind(item)
-        holder.card.setOnClickListener {
-            goToDetails(item)
-        }
+//        holder.card.setOnClickListener {
+//            goToDetails(item)
+//        }
     }
 
-    private fun goToDetails(item: Donation) {
-        val intentDetails = Intent(context, DoavelDetails::class.java)
-        intentDetails.putExtra("id", item.id)
-        context.startActivity(intentDetails)
-    }
+//    private fun goToDetails(item: Donation) {
+//        val intentDetails = Intent(context, DoavelDetails::class.java)
+//        intentDetails.putExtra("id", item.id)
+//        context.startActivity(intentDetails)
+//    }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -55,15 +55,26 @@ class DonationAdapter(private var items: MutableList<Donation>) : RecyclerView.A
         private val state: TextView = itemView.status!!
 
         fun bind(item: Donation) {
+
+            val image: String = if (item.attach.size > 0) {
+                item.attach.first()
+            } else {
+                "https://mtypks.org/wp-content/uploads/2018/10/mtyp-name-your-own-price-donation-image.png"
+            }
+
             Glide
                     .with(itemView.context)
-                    .load(item.attach.first())
+                    .load(image)
                     .centerCrop()
                     .into(thumbnail)
 
             title.text = item.name
             date.text = item.updatedOn?.let { formatDate(it) }
-            state.text = item.status.toString()
+            state.text = when (item.status) {
+                Donation.STATUS.WAITING -> "Aguardando um Boas"
+                Donation.STATUS.PENDENT -> "Em Andamento"
+                Donation.STATUS.RESOLVED -> "Resolvido"
+            }
         }
     }
 }

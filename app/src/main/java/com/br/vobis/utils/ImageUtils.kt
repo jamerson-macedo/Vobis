@@ -28,18 +28,18 @@ object ImageUtils {
 
     fun generateImage(context: Context, bitmap: Bitmap, width: Int, height: Int, ml: Int = 0, mr: Int = 0, mt: Int = 0, mb: Int = 0): ImageView {
         val sizeInDP = { size: Int -> sizeInDP(context, size) }
-        val newImage = ImageView(context)
-        val layoutParams = LinearLayout.LayoutParams(sizeInDP(width), sizeInDP(height))
 
-        layoutParams.leftMargin = sizeInDP(ml)
-        layoutParams.topMargin = sizeInDP(mt)
-        layoutParams.rightMargin = sizeInDP(mr)
-        layoutParams.bottomMargin = sizeInDP(mb)
+        val params = LinearLayout.LayoutParams(sizeInDP(width), sizeInDP(height)).apply {
+            leftMargin = sizeInDP(ml)
+            topMargin = sizeInDP(mt)
+            rightMargin = sizeInDP(mr)
+            bottomMargin = sizeInDP(mb)
+        }
 
-        newImage.setImageBitmap(bitmap)
-        newImage.scaleType = ImageView.ScaleType.CENTER_CROP
-        newImage.layoutParams = layoutParams
-
-        return newImage
+        return ImageView(context).apply {
+            setImageBitmap(bitmap)
+            scaleType = ImageView.ScaleType.CENTER_CROP
+            layoutParams = params
+        }
     }
 }

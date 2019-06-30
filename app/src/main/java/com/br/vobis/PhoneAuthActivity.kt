@@ -28,10 +28,7 @@ class PhoneAuthActivity : AppCompatActivity() {
     }
 
     private fun validatephone(phone: String): Boolean {
-        val isvalidphone = phone.length < 11 && phone.contains("-")
-
-
-        return isvalidphone
+        return phone.length < 11 && phone.contains("-")
     }
 
 

@@ -34,7 +34,6 @@ class MainActivity : AppCompatActivity() {
                 FragmentPagerItems.with(this)
                         .add("Doar", DonationsFragment::class.java)
                         .add("Minhas Doações", MyDonationsFragment::class.java)
-                        .add("Necessidades", DonationNeedsFragment::class.java)
                         .create())
         viewPager!!.adapter = adapter
         smartTabLayout!!.setViewPager(viewPager)
@@ -45,6 +44,7 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         val fragment = supportFragmentManager.fragments
+
         fragment.forEach {
             it.onActivityResult(requestCode, resultCode, data)
         }
@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater = menuInflater
+
         inflater.inflate(R.menu.menu, menu)
         return super.onCreateOptionsMenu(menu)
     }
@@ -59,10 +60,12 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         when (item?.itemId) {
-            R.id.sair -> {
+            R.id.logout -> {
                 mAuth.signOut()
                 val intent = Intent(this, PhoneAuthActivity::class.java)
+
                 startActivity(intent)
+                finish()
                 return true
             }
         }
