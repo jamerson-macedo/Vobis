@@ -12,14 +12,14 @@ class Donation : IEntity {
     var subCategory: String? = null
     var phoneAuthor: String? = null
     var status: STATUS = STATUS.WAITING
-    var location: LocationVobis? = null
+    var location: Location? = null
     val attach: MutableList<String> = mutableListOf()
     var createdOn: Timestamp? = Timestamp.now()
     var updatedOn: Timestamp? = null
 
     constructor()
 
-    constructor(name: String, description: String, validity: Timestamp?, phone: String, category: String, subCategory: String, location: LocationVobis) : this() {
+    constructor(name: String, description: String, validity: Timestamp?, phone: String, category: String, subCategory: String, location: Location) : this() {
         this.name = name
         this.description = description
         this.validity = validity
