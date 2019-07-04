@@ -6,29 +6,30 @@
     android:layout_height="match_parent"
     tools:context=".VerifyActivity">
 
-    <com.github.pinball83.maskededittext.MaskedEditText
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/verify_phone"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginStart="16dp"
-        android:layout_marginTop="164dp"
+        android:layout_marginTop="76dp"
         android:layout_marginEnd="16dp"
-        android:hint="Codigo de verificação"
+        android:hint="Insira o codigo de Verificação"
         android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/btn_verificar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/buttons"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Verificar"
         android:textColor="@color/common_google_signin_btn_text_dark_default"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,12 +40,15 @@
     <TextView
         android:id="@+id/textView"
 
-        android:layout_width="365dp"
-        android:layout_height="39dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="60dp"
+        android:textAlignment="center"
         android:layout_marginEnd="16dp"
         android:text="O vobis enviará Um SMS para verificar o seu número de telefone."
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"

@@ -1,6 +1,10 @@
 package com.br.vobis.fragments
 
+import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
@@ -15,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.CategoryActivity
 import com.br.vobis.MapsActivity
 import com.br.vobis.R
+import com.br.vobis.model.Author
 import com.br.vobis.model.Donation
 import com.br.vobis.model.InfoLocation
 import com.br.vobis.model.Location
@@ -26,13 +31,14 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import kotlinx.android.synthetic.main.fragment_doar.*
-import java.lang.Exception
+import kotlinx.android.synthetic.main.sucess_donation.view.*
 import java.util.*
 
 
 class DonationsFragment : androidx.fragment.app.Fragment() {
 
     private var donation = Donation()
+    private var autor = Author()
     private var imageMap = hashMapOf<ImageView, Uri>()
 
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
@@ -43,6 +49,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         private const val PICK_IMAGE_REQUEST = 7
         private const val CATEGORY_CODE = 22
         private const val LOCATION_CODE = 31
+
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -64,15 +71,15 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
             startActivityForResult(Intent(activity!!, MapsActivity::class.java), LOCATION_CODE)
         }
 
-        openlocationmap.setOnClickListener {
-            startActivityForResult(Intent(activity!!, MapsActivity::class.java), LOCATION_CODE)
-        }
+
 
         btn_add_photos.setOnClickListener {
             ImageUtils.selectImageByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
         btn_submit.setOnClickListener {
+
+
             onDonation()
         }
     }
@@ -163,8 +170,16 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     private fun onDonation() {
         btn_submit.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
+        // olhe se é isso mesmo
+        val id = mAuth.currentUser?.uid
+        val nomeuser = mAuth.currentUser?.displayName
 
         val phoneAuthor = mAuth.currentUser?.phoneNumber!!
+        autor.name = nomeuser
+        autor.id = id
+        autor.telefone = phoneAuthor
+
+
         val name = edt_name.text.toString().trim()
         val description = edt_description.text.toString().trim()
 
@@ -177,6 +192,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
                 submitWithImages()
             } else {
                 submitData()
+
             }
         }
     }
@@ -207,20 +223,37 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun submitData() {
+
         try {
             DonationService().add(donation)
 
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
 
-            showSnackbar("Obrigado, doação realizada com sucesso!")
-
+            showpopupdone(R.layout.sucess_donation)
             resetDataInputs()
+            //showSnackbar("Obrigado, doação realizada com sucesso!")
         } catch (e: Exception) {
             showSnackbar("Verifique sua conexão e tente novamente")
         }
 
     }
+
+    @SuppressLint("InflateParams", "ResourceAsColor")
+    private fun showpopupdone(layout: Int) {
+        val dialog = AlertDialog.Builder(activity)
+        val view = layoutInflater.inflate(layout, null)
+        dialog.setView(view)
+
+        val alertDialog = dialog.create()
+        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        alertDialog.show()
+        view.close_dialog.setOnClickListener {
+            alertDialog.dismiss()
+        }
+
+    }
+
 
     private fun getLocationByLatLong(latitude: Double, longitude: Double): Location? {
 
@@ -258,6 +291,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun showSnackbar(message: String) {
+
         Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).show()
     }
 

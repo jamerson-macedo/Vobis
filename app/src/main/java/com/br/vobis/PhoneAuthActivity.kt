@@ -14,21 +14,16 @@ class PhoneAuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_phone_auth)
+
         btn_cadastrar.setOnClickListener {
-
-            val phone = cadas_phone.text.toString().trim()
-
+            val phone = cadas_phone.rawText.toString()
+            val nome = cadas_nome.text.toString()
             val i = Intent(this@PhoneAuthActivity, VerifyActivity::class.java)
             i.putExtra("phone", phone)
+            i.putExtra("name", nome)
             startActivity(i)
-
         }
 
-
-    }
-
-    private fun validatephone(phone: String): Boolean {
-        return phone.length < 11 && phone.contains("-")
     }
 
 

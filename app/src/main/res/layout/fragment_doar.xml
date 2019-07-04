@@ -13,8 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".fragments.MyDonationsFragment">
-
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -31,7 +29,6 @@
                 android:id="@+id/edt_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:hint="Nome da Doação" />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,21 +77,7 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/openlocationmap"
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:focusable="false"
-            android:text="Pegar Localização"
-            app:icon="@drawable/ic_map_black_24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
+
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -116,8 +99,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:layout_marginEnd="16dp"
-            android:background="@color/colorPrimary"
             android:text="Doar"
+            android:backgroundTint="@color/colorPrimary"
             android:textColor="@color/common_google_signin_btn_text_dark_default"
             app:cornerRadius="17dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -160,7 +143,7 @@
             android:text="Imagens (max. 5)"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/openlocationmap" />
+            app:layout_constraintTop_toBottomOf="@+id/layout_edt_location" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/layout_edt_category"
