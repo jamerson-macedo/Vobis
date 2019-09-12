@@ -1,15 +1,12 @@
 package com.br.vobis.adapters
 
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.br.vobis.DoavelDetails
 import com.br.vobis.R
 import com.br.vobis.model.Donation
 import com.br.vobis.utils.DateUtils.formatDate
@@ -35,20 +32,10 @@ class DonationAdapter(private var items: MutableList<Donation>) : RecyclerView.A
         val item = items[position]
 
         holder.bind(item)
-//        holder.card.setOnClickListener {
-//            goToDetails(item)
-//        }
     }
-
-//    private fun goToDetails(item: Donation) {
-//        val intentDetails = Intent(context, DoavelDetails::class.java)
-//        intentDetails.putExtra("id", item.id)
-//        context.startActivity(intentDetails)
-//    }
 
     class CustomViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        val card: CardView = itemView.card!!
         private val thumbnail: ImageView = itemView.thumbnail!!
         private val title: TextView = itemView.title!!
         private val date: TextView = itemView.date!!

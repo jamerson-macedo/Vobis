@@ -1,10 +1,6 @@
 package com.br.vobis
 
-import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,16 +9,15 @@ import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_verify.*
-import kotlinx.android.synthetic.main.sucess_donation.view.*
+import java.security.Provider
 import java.util.concurrent.TimeUnit
 
 class VerifyActivity : AppCompatActivity() {
     private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
     private lateinit var mcallbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
-    var verificaionId = ""
-    var numberphone = ""
-    var nome_user = ""
-
+    private var nameUser = ""
+    private var numberPhone = ""
+    private var verificationId = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,73 +25,59 @@ class VerifyActivity : AppCompatActivity() {
 
         val extras = intent.extras
         if (extras != null) {
-            numberphone = extras.getString("phone")
-            Log.d("numberfone", numberphone)
-            nome_user = extras.getString("name")
+            numberPhone = extras.getString("phone")!!
+            nameUser = extras.getString("name")!!
+            Log.d("numberfone", numberPhone)
         }
 
         verify()
 
         btn_verificar.setOnClickListener {
-            showpopupdone(R.layout.loading)
             authenticate()
         }
     }
 
     private fun authenticate() {
-
         val verifyCode = verify_phone.text.toString()
-        if (!verifyCode.isEmpty()) {
 
-            val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(verificaionId, verifyCode)
+        if (verifyCode.isNotEmpty()) {
+            val credential = PhoneAuthProvider.getCredential(verificationId, verifyCode)
+
             signIn(credential)
         } else {
-            Toast.makeText(this, "insira o codigo", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Insira o código", Toast.LENGTH_LONG).show()
         }
     }
 
     private fun verifyCallbacks() {
         mcallbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-            override fun onVerificationCompleted(credential: PhoneAuthCredential?) {
-                signIn(credential)
+            override fun onVerificationCompleted(phoneAuthCredential: PhoneAuthCredential) {
+                signIn(phoneAuthCredential)
             }
 
-            override fun onVerificationFailed(p0: FirebaseException?) {
-                Toast.makeText(this@VerifyActivity, p0?.message.toString(), Toast.LENGTH_LONG).show()
+            override fun onVerificationFailed(p0: FirebaseException) {
+                Toast.makeText(this@VerifyActivity, p0.message.toString(), Toast.LENGTH_LONG).show()
             }
 
-            override fun onCodeSent(p0: String?, p1: PhoneAuthProvider.ForceResendingToken?) {
+            override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
                 super.onCodeSent(p0, p1)
 
-                verificaionId = p0.toString()
-                Log.d("verificacao", verificaionId)
+                verificationId = p0
             }
         }
-
-    }
-
-    @SuppressLint("InflateParams", "ResourceAsColor")
-    private fun showpopupdone(layout: Int) {
-        val dialog = AlertDialog.Builder(this)
-        val view = layoutInflater.inflate(layout, null)
-        dialog.setView(view)
-
-        val alertDialog = dialog.create()
-        alertDialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-        alertDialog.show()
-        view.close_dialog.setOnClickListener {
-            alertDialog.dismiss()
-        }
-
     }
 
     private fun signIn(credential: PhoneAuthCredential?) {
         if (credential != null) {
             mAuth.signInWithCredential(credential).addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
-                    val profileUpdates = UserProfileChangeRequest.Builder()
-                            .setDisplayName(nome_user).build()
+                    val profileUpdates = UserProfileChangeRequest
+                            .Builder()
+                            .setDisplayName(nameUser)
+                            .build()
+
                     Toast.makeText(this, "Login realizado com Sucesso !", Toast.LENGTH_LONG).show()
+
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     finish()
@@ -110,9 +91,7 @@ class VerifyActivity : AppCompatActivity() {
 
     private fun verify() {
         verifyCallbacks()
-        val phone = numberphone
-        Log.d("lofone", phone)
-        PhoneAuthProvider.getInstance().verifyPhoneNumber("+55 $phone", 60, TimeUnit.SECONDS, this, mcallbacks)
+        PhoneAuthProvider.getInstance().verifyPhoneNumber("+55 $numberPhone", 60, TimeUnit.SECONDS, this, mcallbacks)
     }
 }
 

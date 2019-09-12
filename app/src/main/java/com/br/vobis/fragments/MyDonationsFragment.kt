@@ -31,9 +31,9 @@ class MyDonationsFragment : Fragment() {
         super.onStart()
 
         val user = mAuth.currentUser
-        val phone = user?.phoneNumber
+        val phone = user!!.phoneNumber!!
 
-        DonationService().collectionReference.whereEqualTo("phoneAuthor", phone).addSnapshotListener { querySnapshot, _ ->
+        DonationService().getByPhone(phone).addSnapshotListener { querySnapshot, _ ->
             val items = mutableListOf<Donation>()
 
             querySnapshot?.documents?.forEach { documentSnapshot ->

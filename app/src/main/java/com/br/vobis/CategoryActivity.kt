@@ -4,9 +4,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.br.vobis.adapters.CategoryAdapter
+import com.br.vobis.model.Category
 import com.br.vobis.model.ExpandableCategory
 import com.br.vobis.services.CategoryService
-import com.jedev.vobis_admin.models.Category
 import kotlinx.android.synthetic.main.activity_category.*
 
 
@@ -17,7 +17,7 @@ class CategoryActivity : AppCompatActivity() {
         setContentView(R.layout.activity_category)
         setupRecycleView()
 
-        CategoryService().getAll().addOnSuccessListener { querySnapshot ->
+        CategoryService().getAll().get().addOnSuccessListener { querySnapshot ->
             val categories = mutableListOf<ExpandableCategory>()
 
             querySnapshot.documents.forEach { document ->

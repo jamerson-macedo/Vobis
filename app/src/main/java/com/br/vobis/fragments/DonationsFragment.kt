@@ -19,10 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.CategoryActivity
 import com.br.vobis.MapsActivity
 import com.br.vobis.R
-import com.br.vobis.model.Author
 import com.br.vobis.model.Donation
 import com.br.vobis.model.InfoLocation
-import com.br.vobis.model.Location
+import com.br.vobis.model.LocationVobis
 import com.br.vobis.services.DonationService
 import com.br.vobis.utils.ImageUtils
 import com.br.vobis.utils.ImageUtils.generateImage
@@ -38,7 +37,6 @@ import java.util.*
 class DonationsFragment : androidx.fragment.app.Fragment() {
 
     private var donation = Donation()
-    private var autor = Author()
     private var imageMap = hashMapOf<ImageView, Uri>()
 
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
@@ -71,15 +69,11 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
             startActivityForResult(Intent(activity!!, MapsActivity::class.java), LOCATION_CODE)
         }
 
-
-
         btn_add_photos.setOnClickListener {
             ImageUtils.selectImageByGallery(activity!!, PICK_IMAGE_REQUEST)
         }
 
         btn_submit.setOnClickListener {
-
-
             onDonation()
         }
     }
@@ -132,9 +126,9 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
 
     private fun resolveResultImage(uri: Uri) {
         if (imageMap.size == 5) {
-            return showSnackbar("Você antigiu o máximo de imagens permitidas")
+            return showSnackBar("Você antigiu o máximo de imagens permitidas")
         } else if (imageMap.values.contains(uri)) {
-            return showSnackbar("Essa imagem já existe")
+            return showSnackBar("Essa imagem já existe")
         }
 
         val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
@@ -170,29 +164,22 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     private fun onDonation() {
         btn_submit.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
-        // olhe se é isso mesmo
-        val id = mAuth.currentUser?.uid
-        val nomeuser = mAuth.currentUser?.displayName
 
+        val nameUser = mAuth.currentUser?.displayName
         val phoneAuthor = mAuth.currentUser?.phoneNumber!!
-        autor.name = nomeuser
-        autor.id = id
-        autor.telefone = phoneAuthor
-
 
         val name = edt_name.text.toString().trim()
         val description = edt_description.text.toString().trim()
 
         if (isValidDonation(name, description)) {
-            donation.name = name
-            donation.phoneAuthor = phoneAuthor
+            donation.author = nameUser
+            donation.phone = phoneAuthor
             donation.description = description
 
             if (imageMap.size > 0) {
                 submitWithImages()
             } else {
                 submitData()
-
             }
         }
     }
@@ -215,7 +202,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
                 }
             }
         } catch (e: Exception) {
-            showSnackbar("Falha ao doar, Verifique sua internet")
+            showSnackBar("Falha ao doar, Verifique sua internet")
 
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
@@ -223,26 +210,24 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     }
 
     private fun submitData() {
-
         try {
             DonationService().add(donation)
 
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
 
-            showpopupdone(R.layout.sucess_donation)
+            showPopupDone()
             resetDataInputs()
-            //showSnackbar("Obrigado, doação realizada com sucesso!")
         } catch (e: Exception) {
-            showSnackbar("Verifique sua conexão e tente novamente")
+            showSnackBar("Verifique sua conexão e tente novamente")
         }
 
     }
 
-    @SuppressLint("InflateParams", "ResourceAsColor")
-    private fun showpopupdone(layout: Int) {
+    @SuppressLint("InflateParams")
+    private fun showPopupDone() {
         val dialog = AlertDialog.Builder(activity)
-        val view = layoutInflater.inflate(layout, null)
+        val view = layoutInflater.inflate(R.layout.sucess_donation, null)
         dialog.setView(view)
 
         val alertDialog = dialog.create()
@@ -251,11 +236,9 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         view.close_dialog.setOnClickListener {
             alertDialog.dismiss()
         }
-
     }
 
-
-    private fun getLocationByLatLong(latitude: Double, longitude: Double): Location? {
+    private fun getLocationByLatLong(latitude: Double, longitude: Double): LocationVobis? {
 
         val geoCoder = Geocoder(activity!!, Locale.getDefault())
         val addresses: List<Address> = geoCoder.getFromLocation(latitude, longitude, 1)
@@ -269,7 +252,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
 
             val infoLocation = InfoLocation(address, cityName, stateName, countryName)
 
-            return Location(latitude, longitude, infoLocation)
+            return LocationVobis(latitude, longitude, infoLocation)
         }
 
         return null
@@ -290,8 +273,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         edt_location.setText("")
     }
 
-    private fun showSnackbar(message: String) {
-
+    private fun showSnackBar(message: String) {
         Snackbar.make(view!!, message, Snackbar.LENGTH_LONG).show()
     }
 
