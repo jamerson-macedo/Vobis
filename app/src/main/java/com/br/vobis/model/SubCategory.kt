@@ -1,10 +1,10 @@
-package com.jedev.vobis_admin.models
+package com.br.vobis.model
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.firebase.Timestamp
 
-class SubCategory(): Parcelable {
+class SubCategory() : Parcelable {
     var name: String? = null
     var createdOn = Timestamp.now()
 
@@ -14,7 +14,7 @@ class SubCategory(): Parcelable {
 
     constructor(parcel: Parcel) : this() {
         name = parcel.readString()
-        createdOn = parcel.readParcelable(Timestamp::class.java.classLoader)
+        createdOn = parcel.readParcelable(Timestamp::class.java.classLoader)!!
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

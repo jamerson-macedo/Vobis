@@ -1,5 +1,5 @@
 package com.br.vobis.services
 
-import com.jedev.vobis_admin.models.Category
+import com.br.vobis.model.Category
 
 class CategoryService : EntityService<Category>("categories")

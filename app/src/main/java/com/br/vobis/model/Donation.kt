@@ -1,31 +1,41 @@
 package com.br.vobis.model
 
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentReference
 
 class Donation : IEntity {
-
-    override var id: String? = null
+    override var key: DocumentReference? = null
+    var author: String? = null
     var name: String? = null
     var description: String? = null
     var validity: Timestamp? = null
     var category: String? = null
     var subCategory: String? = null
-    var phoneAuthor: String? = null
+    var phone: String? = null
     var status: STATUS = STATUS.WAITING
-    var location: Location? = null
+    var memberResponsible: DocumentReference? = null
+    var instituteResponsible: DocumentReference? = null
+    var location: LocationVobis? = null
     val attach: MutableList<String> = mutableListOf()
-    var createdOn: Timestamp? = Timestamp.now()
+    var active: Boolean = true
+    var createdOn: Timestamp = Timestamp.now()
     var updatedOn: Timestamp? = null
 
     constructor()
 
-    constructor(name: String, description: String, validity: Timestamp?, phone: String, category: String, subCategory: String, location: Location) : this() {
+    constructor(
+            author: String,
+            name: String,
+            description: String,
+            validity: Timestamp?,
+            phone: String,
+            location: LocationVobis
+    ) : this() {
+        this.author = author
         this.name = name
         this.description = description
         this.validity = validity
-        this.phoneAuthor = phone
-        this.category = category
-        this.subCategory = subCategory
+        this.phone = phone
         this.location = location
     }
 

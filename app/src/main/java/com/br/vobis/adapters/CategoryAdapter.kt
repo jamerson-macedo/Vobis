@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import com.br.vobis.R
 import com.br.vobis.model.ExpandableCategory
-import com.jedev.vobis_admin.models.SubCategory
+import com.br.vobis.model.SubCategory
 import com.thoughtbot.expandablerecyclerview.ExpandableRecyclerViewAdapter
 import com.thoughtbot.expandablerecyclerview.models.ExpandableGroup
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder

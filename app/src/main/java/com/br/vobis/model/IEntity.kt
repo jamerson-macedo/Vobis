@@ -1,5 +1,7 @@
 package com.br.vobis.model
 
+import com.google.firebase.firestore.DocumentReference
+
 interface IEntity {
-    var id: String?
+    var key: DocumentReference?
 }

@@ -2,13 +2,10 @@ package com.br.vobis.services
 
 import com.br.vobis.model.IEntity
 import com.google.android.gms.tasks.Task
-import com.google.firebase.firestore.DocumentSnapshot
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.*
 
 
-open class EntityService<T : IEntity>(collection: String) {
+open class EntityService<T: IEntity>(collection: String) {
 
     private val firestore = FirebaseFirestore.getInstance()
     val collectionReference = firestore.collection(collection)
@@ -19,26 +16,33 @@ open class EntityService<T : IEntity>(collection: String) {
                 .build()
     }
 
-    fun getAll(): Task<QuerySnapshot> {
-        return this.collectionReference.get()
+    fun getAll(): CollectionReference {
+        return this.collectionReference
     }
 
-    fun getById(id: String): Task<DocumentSnapshot> {
-        return this.collectionReference.document(id).get()
+    fun getById(key: String): Task<DocumentSnapshot> {
+        return this.collectionReference.document(key).get()
     }
 
-    fun add(data: T): Task<DocumentSnapshot> {
+    fun getByParam(param: String, data: Any?): Query {
+        return this.collectionReference.whereEqualTo(param, data)
+    }
+
+    open fun add(data: T): Task<Void> {
         val newDoc = this.collectionReference.document()
-        data.id = newDoc.id
-        newDoc.set(data)
-        return newDoc.get()
+
+        data.key = newDoc
+        return newDoc.set(data)
     }
 
-    fun update(id: String, data: T) {
-        this.collectionReference.document(id).set(data)
+    fun update(key: String, data: T): Task<Void> {
+        val doc = this.collectionReference.document(key)
+
+        data.key = doc
+        return doc.set(data)
     }
 
-    fun delete(id: String) {
-        this.collectionReference.document(id).delete()
+    fun delete(key: String): Task<Void> {
+        return this.collectionReference.document(key).delete()
     }
 }
