@@ -2,14 +2,12 @@ package com.br.vobis
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.*
 import kotlinx.android.synthetic.main.activity_verify.*
-import java.security.Provider
 import java.util.concurrent.TimeUnit
 
 class VerifyActivity : AppCompatActivity() {
@@ -27,12 +25,13 @@ class VerifyActivity : AppCompatActivity() {
         if (extras != null) {
             numberPhone = extras.getString("phone")!!
             nameUser = extras.getString("name")!!
-            Log.d("numberfone", numberPhone)
+
         }
 
         verify()
 
         btn_verificar.setOnClickListener {
+
             authenticate()
         }
     }
@@ -71,16 +70,23 @@ class VerifyActivity : AppCompatActivity() {
         if (credential != null) {
             mAuth.signInWithCredential(credential).addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
                     val profileUpdates = UserProfileChangeRequest
                             .Builder()
                             .setDisplayName(nameUser)
                             .build()
+                    user?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(this, "Login realizado com Sucesso !", Toast.LENGTH_LONG).show()
 
-                    Toast.makeText(this, "Login realizado com Sucesso !", Toast.LENGTH_LONG).show()
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+
+                                }
+                            }
                 } else {
                     Toast.makeText(this, "sem codigo", Toast.LENGTH_LONG).show()
                 }
