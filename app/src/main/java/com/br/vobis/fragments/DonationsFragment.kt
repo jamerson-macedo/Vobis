@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.br.vobis.CategoryActivity
 import com.br.vobis.MapsActivity
@@ -41,9 +40,6 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
 
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
     private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
-
-    var alertDialog: AlertDialog? = null
-
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
@@ -81,22 +77,40 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         }
     }
 
-    private fun isValidDonation(name: String, description: String): Boolean {
-        val errorInput = when {
-            name.isEmpty() -> "Preencha o campo do nome do item"
-            description.isEmpty() -> "Preencha o campo da Descrição"
-            // donation.validity == null -> "Preencha o campo da Validade"
-            else -> null
+    private fun isValidDonation(): Boolean {
+        var valid = true
+
+        if (edt_name.text.toString().isEmpty()) {
+            edt_name.error = "Nome obrigatório"
+            valid = false
         }
 
-        if (errorInput != null) {
-            Toast.makeText(activity, errorInput, Toast.LENGTH_LONG).show()
+        if (edt_description.text.toString().isEmpty()) {
+            edt_description.error = "Descrição obrigatório"
+            valid = false
+        }
 
+        if (edt_category.text.toString().isEmpty()) {
+            edt_category.error = "Categoria obrigatório"
+            valid = false
+        }
+
+        if (edt_subcategory.text.toString().isEmpty()) {
+            edt_subcategory.error = "Subcategoria obrigatório"
+            valid = false
+        }
+
+        if (edt_location.text.toString().isEmpty()) {
+            edt_location.error = "Local obrigatório"
+            valid = false
+        }
+
+        if (!valid) {
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
         }
 
-        return errorInput == null
+        return valid
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -168,16 +182,13 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         btn_submit.visibility = View.INVISIBLE
         progressBar.visibility = View.VISIBLE
 
-        val nameUser = mAuth.currentUser?.displayName
-        val phoneAuthor = mAuth.currentUser?.phoneNumber!!
-
-        val name = edt_name.text.toString().trim()
-        val description = edt_description.text.toString().trim()
-
-        if (isValidDonation(name, description)) {
-            donation.author = nameUser
-            donation.phone = phoneAuthor
-            donation.description = description
+        if (isValidDonation()) {
+            donation.apply {
+                author = mAuth.currentUser!!.displayName
+                phone = mAuth.currentUser!!.phoneNumber
+                name = edt_name.text.toString().trim()
+                description = edt_description.text.toString().trim()
+            }
 
             if (imageMap.size > 0) {
                 submitWithImages()
@@ -199,13 +210,13 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
                         donation.addAttach(it.toString())
 
                         if (uriFileLocal == imageMap[imageMap.keys.last()]) {
-                            submitData()
+                            return@addOnSuccessListener submitData()
                         }
                     }
                 }
             }
         } catch (e: Exception) {
-            showSnackBar("Falha ao doar, Verifique sua internet")
+            showSnackBar("Falha ao enviar imagens")
 
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE
@@ -220,11 +231,11 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
             progressBar.visibility = View.INVISIBLE
 
             showPopupDone()
+
             resetDataInputs()
         } catch (e: Exception) {
-            showSnackBar("Verifique sua conexão e tente novamente")
+            showSnackBar("Falha ao enviar, tente novamente")
         }
-
     }
 
     @SuppressLint("InflateParams")
@@ -264,10 +275,12 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     private fun resetDataInputs() {
         donation = Donation()
 
+
         imageMap.keys.forEach {
             container_photos.removeView(it)
-            imageMap.remove(it)
         }
+
+        imageMap.clear()
 
         edt_name.setText("")
         edt_category.setText("")

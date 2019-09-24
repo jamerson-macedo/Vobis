@@ -10,7 +10,7 @@ import com.br.vobis.model.Donation
 class DonationService : EntityService<Donation>("donations") {
 
     fun getByPhone(phone: String): Query {
-        return getByParam("phone", phone)
+        return getByParam("phone", phone).orderBy("createdOn", Query.Direction.DESCENDING)
     }
 
     fun getByMember(memberReference: DocumentReference, limit: Long = 30): Query {
