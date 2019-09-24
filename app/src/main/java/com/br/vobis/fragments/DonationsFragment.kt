@@ -44,6 +44,8 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
     private val storage: FirebaseStorage by lazy { FirebaseStorage.getInstance() }
     private val mAuth: FirebaseAuth by lazy { FirebaseAuth.getInstance() }
 
+    var alertDialog: AlertDialog? = null
+
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
@@ -58,6 +60,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         edt_category.setOnClickListener {
             startActivityForResult(Intent(activity, CategoryActivity::class.java), CATEGORY_CODE)
