@@ -47,7 +47,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             override fun onLocationChanged(location: Location) {
                 val actualLocation = LatLng(location.latitude, location.longitude)
 
-                Toast.makeText(this@MapsActivity, "Selecione a posição", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@MapsActivity, getString(R.string.select_position), Toast.LENGTH_SHORT).show()
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(actualLocation, 18f))
                 mMap.setOnMapClickListener { latLng ->
@@ -104,7 +104,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             val permissionDenied = resultPermission == PackageManager.PERMISSION_DENIED
 
             if (permissionDenied) {
-                val msg = "Você precisa aceitar as permissões para uso adequado"
+                val msg = getString(R.string.require_permissions)
                 Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
             } else {
                 if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

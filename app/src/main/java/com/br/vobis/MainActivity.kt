@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewpage)
         smartTabLayout = findViewById(R.id.viewpagertab)
         supportActionBar!!.elevation = 0f
-        // configurar action bar
 
+        // Configs of action bar
         supportActionBar!!.title = "Doações"
         val adapter = FragmentPagerItemAdapter(supportFragmentManager,
                 FragmentPagerItems.with(this)

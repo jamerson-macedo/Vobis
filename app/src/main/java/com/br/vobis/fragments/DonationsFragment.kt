@@ -81,27 +81,27 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         var valid = true
 
         if (edt_name.text.toString().isEmpty()) {
-            edt_name.error = "Nome obrigatório"
+            edt_name.error = getString(R.string.name_requerid)
             valid = false
         }
 
         if (edt_description.text.toString().isEmpty()) {
-            edt_description.error = "Descrição obrigatório"
+            edt_description.error = getString(R.string.description_requerid)
             valid = false
         }
 
         if (edt_category.text.toString().isEmpty()) {
-            edt_category.error = "Categoria obrigatório"
+            edt_category.error = getString(R.string.category_requerid)
             valid = false
         }
 
         if (edt_subcategory.text.toString().isEmpty()) {
-            edt_subcategory.error = "Subcategoria obrigatório"
+            edt_subcategory.error = getString(R.string.sub_category_requerid)
             valid = false
         }
 
         if (edt_location.text.toString().isEmpty()) {
-            edt_location.error = "Local obrigatório"
+            edt_location.error = getString(R.string.location_requerid)
             valid = false
         }
 
@@ -143,9 +143,9 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
 
     private fun resolveResultImage(uri: Uri) {
         if (imageMap.size == 5) {
-            return showSnackBar("Você antigiu o máximo de imagens permitidas")
+            return showSnackBar(getString(R.string.max_image_by_donation))
         } else if (imageMap.values.contains(uri)) {
-            return showSnackBar("Essa imagem já existe")
+            return showSnackBar(getString(R.string.image_exists))
         }
 
         val bitmap = MediaStore.Images.Media.getBitmap(activity!!.contentResolver, uri)
@@ -216,7 +216,7 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
                 }
             }
         } catch (e: Exception) {
-            showSnackBar("Falha ao enviar imagens")
+            showSnackBar(getString(R.string.fail_send_image))
 
             btn_submit.visibility = View.VISIBLE
             progressBar.visibility = View.INVISIBLE

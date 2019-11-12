@@ -11,7 +11,7 @@ import com.br.vobis.R
 import com.br.vobis.model.Donation
 import com.br.vobis.utils.DateUtils.formatDate
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.card_item_doacao.view.*
+import kotlinx.android.synthetic.main.item_donation.view.*
 
 class DonationAdapter(private var items: MutableList<Donation>) : RecyclerView.Adapter<DonationAdapter.CustomViewHolder>() {
     private lateinit var context: Context
@@ -19,7 +19,7 @@ class DonationAdapter(private var items: MutableList<Donation>) : RecyclerView.A
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         context = parent.context
         val layoutInflater = LayoutInflater.from(context)
-        val itemView = layoutInflater.inflate(R.layout.card_item_doacao, parent, false)
+        val itemView = layoutInflater.inflate(R.layout.item_donation, parent, false)
 
         return CustomViewHolder(itemView)
     }
