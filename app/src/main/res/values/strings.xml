@@ -1,10 +1,24 @@
 <resources>
     <string name="app_name">Vobis</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_maps">Map</string>
     <string name="confirm_code">Insira o Código de verificação</string>
     <string name="verify">Verificar</string>
-    <string name="waiting_code">Aguarde o código enviado por SMS para verificar o seu número</string>
+    <string name="waiting_code">Aguarde pelo código de confirmação enviado por SMS</string>
+    <string name="verify_code">Verificando código…</string>
+    <string name="error_network">Falha! Verifique sua conexão!</string>
+    <string name="confirm">Confirmar</string>
+    <string name="confirm_location">Confirmar localização</string>
+    <string name="login_sucess">Login realizado com Sucesso!</string>
+    <string name="require_permissions">Você precisa aceitar as permissões necessárias</string>
+    <string name="select_position">Selecione a posição</string>
+    <string name="fail_send_image">Falha ao enviar imagens</string>
+    <string name="max_image_by_donation">Você antigiu o máximo de imagens permitidas</string>
+    <string name="image_exists">Essa imagem já existe</string>
+    <string name="name_requerid">Nome obrigatório</string>
+    <string name="description_requerid">Descrição obrigatório</string>
+    <string name="category_requerid">Categoria obrigatório</string>
+    <string name="sub_category_requerid">Subcategoria obrigatório</string>
+    <string name="location_requerid">Local obrigatório</string>
 </resources>
