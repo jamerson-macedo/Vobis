@@ -68,23 +68,28 @@ class VerifyActivity : AppCompatActivity() {
         if (credential != null) {
             mAuth.signInWithCredential(credential).addOnCompleteListener { task: Task<AuthResult> ->
                 if (task.isSuccessful) {
+                    val user = FirebaseAuth.getInstance().currentUser
                     val profileUpdates = UserProfileChangeRequest
                             .Builder()
                             .setDisplayName(nameUser)
                             .build()
 
-                    Toast.makeText(this, getString(R.string.login_sucess), Toast.LENGTH_LONG).show()
+                    user?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(this, getString(R.string.login_sucess), Toast.LENGTH_LONG).show()
 
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+                            }
                 } else {
                     Toast.makeText(this, "Sem código", Toast.LENGTH_LONG).show()
                 }
             }
         }
     }
-
 
     private fun verify() {
         verifyCallbacks()
