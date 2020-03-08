@@ -45,7 +45,6 @@ class DonationsFragment : androidx.fragment.app.Fragment() {
         private const val PICK_IMAGE_REQUEST = 7
         private const val CATEGORY_CODE = 22
         private const val LOCATION_CODE = 31
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
